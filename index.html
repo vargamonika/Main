@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <title>Feladataim - Vagány Oldal</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Feladataim</h1>
+        <p>Ide töltheted fel a saját feladataidat, áttekinthetően!</p>
+    </header>
+    <section class="gallery">
+        <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80" alt="Menő kép 1">
+        <img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=800&q=80" alt="Menő kép 2">
+        <img src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=800&q=80" alt="Menő kép 3">
+    </section>
+    <main>
+        <form id="taskForm">
+            <input type="text" id="taskInput" placeholder="Írd be a feladatot..." required>
+            <button type="submit">Hozzáad</button>
+        </form>
+        <ul id="taskList">
+            <!-- Feladatok ide kerülnek -->
+        </ul>
+    </main>
+    <footer>
+        <p>Készítette: vargamonika &copy; 2025</p>
+    </footer>
+    <script>
+        // Egyszerű JS a feladatok hozzáadásához
+        const form = document.getElementById('taskForm');
+        const input = document.getElementById('taskInput');
+        const list = document.getElementById('taskList');
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const value = input.value.trim();
+            if (value) {
+                const li = document.createElement('li');
+                li.textContent = value;
+                list.appendChild(li);
+                input.value = '';
+            }
+        });
+    </script>
+</body>
+</html>
