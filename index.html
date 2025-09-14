@@ -2,47 +2,65 @@
 <html lang="hu">
 <head>
     <meta charset="UTF-8">
-    <title>Feladataim - Vagány Oldal</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Algoritmizálás Feladatok</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header>
-        <h1>Feladataim</h1>
-        <p>Ide töltheted fel a saját feladataidat, áttekinthetően!</p>
+    <header class="main-header">
+        <h1>Algoritmizálás feladatok</h1>
     </header>
-    <section class="gallery">
-        <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80" alt="Menő kép 1">
-        <img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=800&q=80" alt="Menő kép 2">
-        <img src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=800&q=80" alt="Menő kép 3">
-    </section>
-    <main>
-        <form id="taskForm">
-            <input type="text" id="taskInput" placeholder="Írd be a feladatot..." required>
-            <button type="submit">Hozzáad</button>
-        </form>
-        <ul id="taskList">
-            <!-- Feladatok ide kerülnek -->
-        </ul>
-    </main>
-    <footer>
-        <p>Készítette: vargamonika &copy; 2025</p>
-    </footer>
-    <script>
-        // Egyszerű JS a feladatok hozzáadásához
-        const form = document.getElementById('taskForm');
-        const input = document.getElementById('taskInput');
-        const list = document.getElementById('taskList');
 
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const value = input.value.trim();
-            if (value) {
-                const li = document.createElement('li');
-                li.textContent = value;
-                list.appendChild(li);
-                input.value = '';
-            }
-        });
-    </script>
+    <main class="container">
+
+        <section class="task-section">
+            <div class="task-content">
+                <h2>Feladat 1</h2>
+                <div class="link-placeholder">
+                    <a href="https://example.com/feladat1" target="_blank">Link a feladathoz</a>
+                </div>
+            </div>
+            <div class="task-image-container">
+                <img src="images/algo_image1.jpg" alt="Algoritmus vizualizáció">
+            </div>
+        </section>
+
+        <section class="task-section">
+            <div class="task-content">
+                <h2>Feladat 2</h2>
+                <div class="link-placeholder">
+                    <a href="https://example.com/feladat2" target="_blank">Link a feladathoz</a>
+                </div>
+            </div>
+            <div class="task-image-container">
+                <img src="images/algo_image2.jpg" alt="Adatstruktúrák és hálózatok">
+            </div>
+        </section>
+
+        <section class="task-section">
+            <div class="task-content">
+                <h2>Feladat 3</h2>
+                <div class="link-placeholder">
+                    <a href="https://example.com/feladat3" target="_blank">Link a feladathoz</a>
+                </div>
+            </div>
+            <div class="task-image-container">
+                <img src="images/algo_image3.jpg" alt="Bináris kód és mesterséges intelligencia">
+            </div>
+        </section>
+
+        <section class="task-section">
+            <div class="task-content">
+                <h2>Feladat 4</h2>
+                <div class="link-placeholder">
+                    <a href="https://example.com/feladat4" target="_blank">Link a feladathoz</a>
+                </div>
+            </div>
+            <div class="task-image-container">
+                <img src="images/algo_image4.jpg" alt="Kibernetika és programozás">
+            </div>
+        </section>
+
+    </main>
 </body>
 </html>
