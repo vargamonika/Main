@@ -7,8 +7,9 @@
 }
 
 body {
-    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-    color: #eaeaea;
+    /* Sötétkék és szürke átmenetes háttér */
+    background: linear-gradient(135deg, #0f1c24, #1c3340, #2b4554);
+    color: #c0c0c0; /* Világos szürke szöveg */
     min-height: 100vh;
     display: flex;
     justify-content: center;
@@ -16,7 +17,6 @@ body {
     padding: 2rem;
 }
 
-/* Konténer */
 .container {
     max-width: 1200px;
     width: 100%;
@@ -27,8 +27,8 @@ body {
     text-align: center;
     font-size: 2.5rem;
     margin-bottom: 2rem;
-    color: #00eaff;
-    text-shadow: 0 0 10px rgba(0, 234, 255, 0.7);
+    color: #4da6ff; /* Élénkebb kék cím */
+    text-shadow: 0 0 10px rgba(77, 166, 255, 0.7);
     letter-spacing: 2px;
 }
 
@@ -41,16 +41,18 @@ body {
 
 /* Egy feladat kártya */
 .task {
+    /* Áttetsző, sötét háttér, lekerekített sarkok */
     background: rgba(255, 255, 255, 0.05);
     border-radius: 15px;
     overflow: hidden;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .task:hover {
     transform: translateY(-10px);
-    box-shadow: 0 10px 20px rgba(0, 234, 255, 0.3);
+    box-shadow: 0 10px 20px rgba(77, 166, 255, 0.3);
 }
 
 /* Kép */
@@ -58,17 +60,17 @@ body {
     width: 100%;
     height: 180px;
     object-fit: cover;
-    border-bottom: 2px solid #00eaff;
+    border-bottom: 2px solid #4da6ff;
 }
 
 /* Tartalom */
 .task-content {
-    padding: 1rem 1.2rem;
+    padding: 1.2rem 1.5rem;
 }
 
 .task-content h2 {
     font-size: 1.4rem;
-    color: #00ffc6;
+    color: #b3d1ff; /* Világosabb kék alcím */
     margin-bottom: 0.8rem;
 }
 
@@ -79,13 +81,13 @@ body {
 
 /* Link */
 .task-link {
-    color: #00eaff;
+    color: #8cd4ff; /* Világoskék link */
     text-decoration: none;
     font-weight: bold;
     transition: color 0.3s ease, text-shadow 0.3s ease;
 }
 
 .task-link:hover {
-    color: #00ffc6;
-    text-shadow: 0 0 8px rgba(0, 255, 198, 0.8);
+    color: #b3d1ff;
+    text-shadow: 0 0 8px rgba(179, 209, 255, 0.8);
 }
