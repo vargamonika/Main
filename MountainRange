@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mountain Range</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50; /* Sötétkék/szürke */
+            --secondary-color: #3498db; /* Élénk kék */
+            --background-color: #ecf0f1; /* Világosszürke */
+            --text-color: #2c3e50;
+            --code-bg-color: #bdc3c7; /* Középszürke kód háttér */
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        header {
+            text-align: center;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--primary-color);
+            margin-bottom: 20px;
+        }
+        header h1 {
+            color: var(--primary-color);
+            font-size: 2.5em;
+            margin: 0;
+        }
+        header p {
+            font-style: italic;
+            color: #7f8c8d;
+        }
+        .section {
+            margin-bottom: 30px;
+        }
+        .section h2 {
+            color: var(--secondary-color);
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 5px;
+            margin-bottom: 15px;
+        }
+        .section p {
+            margin-bottom: 10px;
+        }
+        .image-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .code-container {
+            background-color: var(--code-bg-color);
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        ul li::before {
+            content: "• ";
+            color: var(--secondary-color);
+        }
+        strong {
+            color: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Mountain Range</h1>
+        <p>Példa input: 10 20 15 17 35 25 40 12 19 13 12</p>
+    </header>
+
+    <div class="image-container">
+        <img src="https://i.imgur.com/example_image.png" alt="A fa struktúrát ábrázoló diagram">
+    </div>
+
+    <div class="section">
+        <p>Ezt a programot úgy kell elképzelni, mint egy játékot, ahol van egy sor hegy, és meg kell találni a leghosszabb ösvényt, amin végig tudsz menni úgy, hogy **mindig lefelé haladsz**.</p>
+        <p>A program ezt a feladatot három fő lépésben oldja meg:</p>
+    </div>
+
+    <div class="section">
+        <h2>1. Beolvasás és előkészítés</h2>
+        <p>A program először beolvassa a hegyek magasságait. A felhasználónak be kell írnia a számokat, szóközökkel elválasztva. A program ezután a beolvasott szövegből egy listát készít a magasságokból.</p>
+    </div>
+
+    <div class="section">
+        <h2>2. A "szülő" hegyek megkeresése</h2>
+        <p>Ez a legtrükkösebb rész. A program sorra veszi a hegyeket, és minden hegyhez megkeresi azt a **legközelebbi, nála magasabb hegyet**, ami "fölötte" van az ereszkedő úton. Ezt a magasabb hegyet hívjuk a **szülőnek**. Képzeld el, hogy a hegyeket egymás után rakod egy **verembe (stack)**.</p>
+        <p>A verem úgy működik, mint egy tálca a menzán: amit utoljára raktál rá, azt veszed le először.</p>
+        <p>A program végigmegy a hegyek listáján:</p>
+        <ul>
+            <li>Ha a mostani hegy **alacsonyabb**, mint a verem tetején lévő, akkor az lesz a szülője. Ezt a párosítást el is menti.</li>
+            <li>Ha a mostani hegy **magasabb**, mint a verem tetején lévő, akkor kiveszi azt a veremből, mert a mostani hegy árnyékolja. Ezt addig csinálja, amíg nem talál egy nála magasabbat, vagy ki nem ürül a verem.</li>
+        </ul>
+        <p>Ezzel a módszerrel a program egy "családfát" épít a hegyekből, ahol minden hegynek van egy szülője, kivéve a legmagasabbakat.</p>
+    </div>
+
+    <div class="section">
+        <h2>3. A leghosszabb út kiszámítása</h2>
+        <p>Most, hogy megvan a családfa, már csak meg kell mérni a leghosszabb "ágat". Ezt egy különleges funkcióval csinálja a program, ami a **depth** nevet kapta. Ez a funkció megmondja, hogy egy adott hegy milyen mélyen van a családfában.</p>
+        <ul>
+            <li>A funkció megnézi egy hegy szülőjét, majd megkérdezi tőle, hogy ő milyen mélyen van. Ehhez hozzáad egyet, és máris megkapja a saját mélységét.</li>
+            <li>Hogy ne kelljen újra és újra kiszámolnia ugyanazt, a program **megjegyzi** (ezt hívják **memoizációnak**) az eredményeket egy "emlékeztető" táblázatba.</li>
+        </ul>
+        <p>Végül a program végigmegy az összes hegyen, kiszámolja a "mélységüket", és kiírja a legnagyobb számot. Ez a szám lesz a leghosszabb ereszkedő ösvény hossza.</p>
+    </div>
+
+    <div class="section">
+        <h2>Java</h2>
+        <div class="code-container">
+            <pre>
+public class MountainGliding {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        // Set recursion limit is not directly applicable in Java, but we can manage stack depth.
+
+        scanner.nextLine();
+        String[] heightsInput = scanner.nextLine().split(" ");
+
+        int[] heights = new int[heightsInput.length];
+
+        for (int i = 0; i < heightsInput.length; i++) {
+            heights[i] = Integer.parseInt(heightsInput[i]);
+        }
+
+        Map<Integer, Integer> up = new HashMap<>();
+        Stack<Pair> stack = new Stack<>();
+        stack.push(new Pair(Double.MAX_VALUE, null));
+
+        for (int i = 0; i < heights.length; i++) {
+            Integer kid = null;
+            while (heights[i] > stack.peek().height) {
+                kid = stack.pop().index;
+            }
+            if (heights[i] < stack.peek().height) {
+                up.put(i, stack.peek().index);
+                if (kid != null) {
+                    up.put(kid, i);
+                }
+                stack.push(new Pair(heights[i], i));
+            }
+        }
+
+        Map<Integer, Integer> memo = new HashMap<>();
+        memo.put(null, 0);
+
+        int maxDepth = 0;
+        for (Integer key : up.keySet()) {
+            maxDepth = Math.max(maxDepth, depth(key, up, memo));
+        }
+
+        System.out.println(maxDepth);
+    }
+
+    private static int depth(Integer i, Map<Integer, Integer> up, Map<Integer, Integer> memo) {
+        if (!memo.containsKey(i)) {
+            memo.put(i, depth(up.get(i), up, memo) + 1);
+        }
+        return memo.get(i);
+    }
+
+    static class Pair {
+        double height;
+        Integer index;
+
+        Pair(double height, Integer index) {
+            this.height = height;
+            this.index = index;
+        }
+    }
+}
+            </pre>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
