@@ -100,23 +100,23 @@
     </div>
 
     <div class="section">
-        <p>Ezt a programot úgy kell elképzelni, mint egy játékot, ahol van egy sor hegy, és meg kell találni a leghosszabb ösvényt, amin végig tudsz menni úgy, hogy **mindig lefelé haladsz**.</p>
+        <p>Ezt a programot úgy kell elképzelni, mint egy játékot, ahol van egy sor hegy, és meg kell találni a leghosszabb utat, amin végig tudunk menni úgy, hogy **mindig lefelé haladunk**.</p>
         <p>A program ezt a feladatot három fő lépésben oldja meg:</p>
     </div>
 
     <div class="section">
         <h2>1. Beolvasás és előkészítés</h2>
-        <p>A program először beolvassa a hegyek magasságait. A felhasználónak be kell írnia a számokat, szóközökkel elválasztva. A program ezután a beolvasott szövegből egy listát készít a magasságokból.</p>
+        <p>A program először beolvassa a hegyek magasságait. A felhasználónak be kell írnia n darab számot, szóközökkel elválasztva. A program ezután a beolvasott szövegből egy listát készít a magasságokból.</p>
     </div>
 
     <div class="section">
         <h2>2. A "szülő" hegyek megkeresése</h2>
-        <p>Ez a legtrükkösebb rész. A program sorra veszi a hegyeket, és minden hegyhez megkeresi azt a **legközelebbi, nála magasabb hegyet**, ami "fölötte" van az ereszkedő úton. Ezt a magasabb hegyet hívjuk a **szülőnek**. Képzeld el, hogy a hegyeket egymás után rakod egy **verembe (stack)**.</p>
-        <p>A verem úgy működik, mint egy tálca a menzán: amit utoljára raktál rá, azt veszed le először.</p>
+        <p>A program sorra veszi a hegyeket, és minden hegyhez megkeresi azt a **legközelebbi, nála alacsonyabb hegyet**, ami "alatta" van az ereszkedő úton. Ezt az alacsonyabb hegyet hívjuk a **szülőnek**. Képzeld el, hogy a hegyeket egymás után rakod egy **verembe (stack)**.</p>
+        <p>A verem úgy működik, mint egy tartály, amiben lentről felfelé haladva egymásra vannak helyezve a beletett tárgyak: amit utoljára raktál bele, azt veszed ki először.</p>
         <p>A program végigmegy a hegyek listáján:</p>
         <ul>
-            <li>Ha a mostani hegy **alacsonyabb**, mint a verem tetején lévő, akkor az lesz a szülője. Ezt a párosítást el is menti.</li>
-            <li>Ha a mostani hegy **magasabb**, mint a verem tetején lévő, akkor kiveszi azt a veremből, mert a mostani hegy árnyékolja. Ezt addig csinálja, amíg nem talál egy nála magasabbat, vagy ki nem ürül a verem.</li>
+            <li>Ha a mostani hegy **magasabb**, mint a verem tetején lévő, akkor az lesz a szülője. Ezt a párosítást el is menti.</li>
+            <li>Ha a mostani hegy **alacsonyabb**, mint a verem tetején lévő, akkor kiveszi azt a veremből, mert arra mehetünk tovább. Ezt addig csinálja, amíg nem talál egy nála magasabbat, vagy ki nem ürül a verem.</li>
         </ul>
         <p>Ezzel a módszerrel a program egy "családfát" épít a hegyekből, ahol minden hegynek van egy szülője, kivéve a legmagasabbakat.</p>
     </div>
@@ -132,7 +132,7 @@
     </div>
 
     <div class="section">
-        <h2>Java</h2>
+        <h2>Java kód</h2>
         <div class="code-container">
             <pre>
 public class MountainGliding {
@@ -195,6 +195,49 @@ public class MountainGliding {
         }
     }
 }
+
+        A kód részletes magyarázata
+1. Beolvasás és adatok előkészítése
+        
+public class MountainGliding { ... }: Ez az osztály tartalmazza a teljes programkódot. A neve, "MountainGliding", a feladatra utal.
+public static void main(String[] args) { ... }: A program belépési pontja, a kód futása itt kezdődik.
+Scanner scanner = new Scanner(System.in);: Létrehoz egy Scanner objektumot, amivel beolvashatjuk a felhasználói bemenetet a konzolról.
+scanner.nextLine();: Ez a sor beolvas egy teljes sort, de nem tárolja el. Gyakran használják, ha a bemenetben van egy üres sor, vagy a feladatleírás része.
+String[] heightsInput = scanner.nextLine().split(" ");: A következő sort beolvassa, és a szóközök mentén feldarabolja, így egy szöveges tömböt kapunk (pl. ["150", "160", "145"]).
+int[] heights = new int[heightsInput.length];: Létrehoz egy új, egész számokat tartalmazó tömböt
+for (int i = 0; i < heightsInput.length; i++) { ... }: Ez a ciklus végigmegy a heightsInput tömb minden elemén.
+heights[i] = Integer.parseInt(heightsInput[i]);: A Integer.parseInt() metódussal átalakítja a szöveges számokat valós int számokká, majd beilleszti a heights tömbbe.
+
+2. "Szülő" hegyek megkeresése
+
+Map<Integer, Integer> up = new HashMap<>();: Létrehoz egy térképet (Map), ami a hegyek "szülő-gyerek" kapcsolatát tárolja.
+Stack<Pair> stack = new Stack<>();: Létrehoz egy vermet (Stack), ami a hegyek magasság-index párosait tárolja. A verem úgy működik, mint egy tálca a menzán: amit utoljára raktál rá, azt veszed le először.
+stack.push(new Pair(Double.MAX_VALUE, null));: A verembe betesz egy speciális, virtuális "hegyet" a lehető legnagyobb magassággal, ami biztosítja, hogy a verem soha ne legyen üres.
+for (int i = 0; i < heights.length; i++) { ... }: Egy ciklus, ami végigmegy az összes bemeneti hegyen.
+Integer kid = null;: Segédváltozó, ami azokat a hegyeket tárolja, amiket a veremből kiveszünk.
+while (heights[i] > stack.peek().height) { ... }: Ez a belső ciklus addig fut, amíg a jelenlegi hegy magasabb, mint a verem tetején lévő. Ekkor kiveszi az alacsonyabb hegyet a veremből, és elmenti az indexét a 
+kid változóba.
+if (heights[i] < stack.peek().height) { ... }: Ha a mostani hegy alacsonyabb, mint a verem tetején lévő, akkor az utóbbi lesz a szülője.
+up.put(i, stack.peek().index);: Hozzáadja a up térképhez, hogy a jelenlegi hegy (i) "szülője" a verem tetején lévő hegy.
+if (kid != null) { up.put(kid, i); }: Ha a while ciklusban kivettünk hegyeket, az utoljára kivett hegy (kid) "szülője" a mostani hegy (i) lesz.
+stack.push(new Pair(heights[i], i));: A jelenlegi hegyet beteszi a verembe.
+
+3. A leghosszabb út kiszámítása
+
+Map<Integer, Integer> memo = new HashMap<>();: Ez egy másik térkép, ami a memoizációhoz (dinamikus programozás) szolgál. Ide menti a már kiszámolt útvonalak hosszát.
+memo.put(null, 0);: A "gyökérelem" (a null indexű, virtuális hegy) mélységét 0-nak állítja be.
+int maxDepth = 0;: Ez a változó tárolja a valaha talált leghosszabb út hosszát.
+for (Integer key : up.keySet()) { ... }: Ez a ciklus végigmegy minden "gyerek" hegyen, ami a up térképben szerepel.
+maxDepth = Math.max(maxDepth, depth(key, up, memo));: Meghívja a depth metódust minden hegyre, hogy kiszámolja az onnan induló út hosszát, és a maxDepth változóban a legnagyobb értéket tartja meg.
+System.out.println(maxDepth);: Kiírja a végső eredményt a konzolra.
+
+4. Segéd metódusok és osztályok
+
+private static int depth(...) { ... }: Ez egy rekurzív függvény.
+if (!memo.containsKey(i)) { ... }: Ha az adott hegy mélységét még nem számolta ki...
+memo.put(i, depth(up.get(i), up, memo) + 1);: ...akkor rekurzívan meghívja magát a szülőre, és az eredményhez hozzáad egyet, majd elmenti a memo térképbe.
+return memo.get(i);: Visszaadja a tárolt mélységértéket.
+static class Pair { ... }: Ez egy egyszerű belső osztály, ami két adatot tárol: egy hegy magasságát (height) és a pozícióját (index).
             </pre>
         </div>
     </div>
