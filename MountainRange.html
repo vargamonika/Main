@@ -111,14 +111,23 @@
 
     <div class="section">
         <h2>2. A "szülő" hegyek megkeresése</h2>
-        <p>A program sorra veszi a hegyeket, és minden hegyhez megkeresi azt a **legközelebbi, nála alacsonyabb hegyet**, ami "alatta" van az ereszkedő úton. Ezt az alacsonyabb hegyet hívjuk a **szülőnek**. Képzeld el, hogy a hegyeket egymás után rakod egy **verembe (stack)**.</p>
-        <p>A verem úgy működik, mint egy tartály, amiben lentről felfelé haladva egymásra vannak helyezve a beletett tárgyak: amit utoljára raktál bele, azt veszed ki először.</p>
-        <p>A program végigmegy a hegyek listáján:</p>
+
+
+
+
+A verem úgy működik, hogy amit utoljára raktál bele, azt veszed ki először (LIFO).
+        
+        <p>A program sorra veszi a hegyeket, és verem (stack) segítségével épít szülő–gyerek kapcsolatokat közöttük. Itt a szülő mindig egy magasabb hegy (vagy a sentinel), nem pedig egy alacsonyabb.</p>
+        <p>Képzeld el, hogy a hegyeket egymás után rakod egy verembe (stack). A verem tetején mindig az a legutóbb látott, még „aktív” magasabb hegy áll, amihez viszonyítjuk a következő bejövő hegyet.</p>
+        <p>A verem úgy működik, hogy amit utoljára raktál bele, azt veszed ki először (LIFO).<p>
+        <p>A program végigmegy a hegyek listáján és minden lépésben a következőt csinálja:</p>
         <ul>
-            <li>Ha a mostani hegy **magasabb**, mint a verem tetején lévő, akkor az lesz a szülője. Ezt a párosítást el is menti.</li>
-            <li>Ha a mostani hegy **alacsonyabb**, mint a verem tetején lévő, akkor kiveszi azt a veremből, mert arra mehetünk tovább. Ezt addig csinálja, amíg nem talál egy nála magasabbat, vagy ki nem ürül a verem.</li>
+            <li>Amíg a mostani hegy magasabb, mint a verem tetején lévő hegy, kivesszük (pop) a veremből a tetejét. (Ezzel eltávolítjuk azokat a nála kisebb hegyeket, amelyekre most már „rátettünk” egy magasabbat.)
+            <li>Ha a mostani hegy alacsonyabb, mint a verem tetején lévő, akkor a verem tetején lévő (korábban látott) magasabb hegy lesz a mostani hegy szülője — ezt a kapcsolatot elmenti.
+            <li>Ha a fenti pop művelet során voltak kivett, kisebb hegyek, akkor a legutoljára kivett ilyen hegy szülőjét a mostani hegyre állítja (mivel most a mostani hegy az, amelyik fölé érkezett).
+            <li>Végül a mostani hegyet berakja (push) a verembe.
         </ul>
-        <p>Ezzel a módszerrel a program egy "családfát" épít a hegyekből, ahol minden hegynek van egy szülője, kivéve a legmagasabbakat.</p>
+        <p>Ezzel a szabállyal egy irányított szerkezet (erdő/fa) jön létre: minden csomópont mutat egy magasabb csomópontra (szülőre), vagy a sentinelre (null). A program ezután memoizált rekurzióval kiszámolja minden csúcstól a szülői láncon lefelé elérhető hosszt, és ezek közül választja a legnagyobbat — ez adja a leghosszabb ereszkedő út hosszát.</p>
     </div>
 
     <div class="section">
