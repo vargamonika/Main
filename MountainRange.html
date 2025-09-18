@@ -205,48 +205,49 @@ public class MountainGliding {
     }
 }
 
-        A kód részletes magyarázata
+A kód részletes magyarázata
+        
 1. Beolvasás és adatok előkészítése
         
-public class MountainGliding { ... }: Ez az osztály tartalmazza a teljes programkódot. A neve, "MountainGliding", a feladatra utal.
-public static void main(String[] args) { ... }: A program belépési pontja, a kód futása itt kezdődik.
-Scanner scanner = new Scanner(System.in);: Létrehoz egy Scanner objektumot, amivel beolvashatjuk a felhasználói bemenetet a konzolról.
-scanner.nextLine();: Ez a sor beolvas egy teljes sort, de nem tárolja el. Gyakran használják, ha a bemenetben van egy üres sor, vagy a feladatleírás része.
-String[] heightsInput = scanner.nextLine().split(" ");: A következő sort beolvassa, és a szóközök mentén feldarabolja, így egy szöveges tömböt kapunk (pl. ["150", "160", "145"]).
-int[] heights = new int[heightsInput.length];: Létrehoz egy új, egész számokat tartalmazó tömböt
-for (int i = 0; i < heightsInput.length; i++) { ... }: Ez a ciklus végigmegy a heightsInput tömb minden elemén.
-heights[i] = Integer.parseInt(heightsInput[i]);: A Integer.parseInt() metódussal átalakítja a szöveges számokat valós int számokká, majd beilleszti a heights tömbbe.
+<b>public class MountainGliding { ... }<b>: Ez az osztály tartalmazza a teljes programkódot. A neve, "MountainGliding", a feladatra utal.
+<b>public static void main(String[] args) { ... }<b>: A program belépési pontja, a kód futása itt kezdődik.
+<b>Scanner scanner = new Scanner(System.in);<b>: Létrehoz egy Scanner objektumot, amivel beolvashatjuk a felhasználói bemenetet a konzolról.
+<b>scanner.nextLine();<b>: Ez a sor beolvas egy teljes sort, de nem tárolja el. Gyakran használják, ha a bemenetben van egy üres sor, vagy a feladatleírás része.
+<b>String[] heightsInput = scanner.nextLine().split(" ");<b>: A következő sort beolvassa, és a szóközök mentén feldarabolja, így egy szöveges tömböt kapunk (pl. ["150", "160", "145"]).
+<b>int[] heights = new int[heightsInput.length];<b>: Létrehoz egy új, egész számokat tartalmazó tömböt
+<b>for (int i = 0; i < heightsInput.length; i++) { ... }<b>: Ez a ciklus végigmegy a heightsInput tömb minden elemén.
+<b>heights[i] = Integer.parseInt(heightsInput[i]);<b>: A Integer.parseInt() metódussal átalakítja a szöveges számokat valós int számokká, majd beilleszti a heights tömbbe.
 
 2. "Szülő" hegyek megkeresése
 
-Map<Integer, Integer> up = new HashMap<>();: Létrehoz egy térképet (Map), ami a hegyek "szülő-gyerek" kapcsolatát tárolja.
-Stack<Pair> stack = new Stack<>();: Létrehoz egy vermet (Stack), ami a hegyek magasság-index párosait tárolja. A verem úgy működik, mint egy tálca a menzán: amit utoljára raktál rá, azt veszed le először.
-stack.push(new Pair(Double.MAX_VALUE, null));: A verembe betesz egy speciális, virtuális "hegyet" a lehető legnagyobb magassággal, ami biztosítja, hogy a verem soha ne legyen üres.
-for (int i = 0; i < heights.length; i++) { ... }: Egy ciklus, ami végigmegy az összes bemeneti hegyen.
-Integer kid = null;: Segédváltozó, ami azokat a hegyeket tárolja, amiket a veremből kiveszünk.
-while (heights[i] > stack.peek().height) { ... }: Ez a belső ciklus addig fut, amíg a jelenlegi hegy magasabb, mint a verem tetején lévő. Ekkor kiveszi az alacsonyabb hegyet a veremből, és elmenti az indexét a 
+<b>Map<Integer, Integer> up = new HashMap<>();<b>: Létrehoz egy térképet (Map), ami a hegyek "szülő-gyerek" kapcsolatát tárolja.
+<b>Stack<Pair> stack = new Stack<>();<b>: Létrehoz egy vermet (Stack), ami a hegyek magasság-index párosait tárolja. A verem úgy működik, mint egy tálca a menzán: amit utoljára raktál rá, azt veszed le először.
+<b>stack.push(new Pair(Double.MAX_VALUE, null));<b>: A verembe betesz egy speciális, virtuális "hegyet" a lehető legnagyobb magassággal, ami biztosítja, hogy a verem soha ne legyen üres.
+<b>for (int i = 0; i < heights.length; i++) { ... }<b>: Egy ciklus, ami végigmegy az összes bemeneti hegyen.
+<b>Integer kid = null;<b>: Segédváltozó, ami azokat a hegyeket tárolja, amiket a veremből kiveszünk.
+<b>while (heights[i] > stack.peek().height) { ... }<b>: Ez a belső ciklus addig fut, amíg a jelenlegi hegy magasabb, mint a verem tetején lévő. Ekkor kiveszi az alacsonyabb hegyet a veremből, és elmenti az indexét a 
 kid változóba.
-if (heights[i] < stack.peek().height) { ... }: Ha a mostani hegy alacsonyabb, mint a verem tetején lévő, akkor az utóbbi lesz a szülője.
-up.put(i, stack.peek().index);: Hozzáadja a up térképhez, hogy a jelenlegi hegy (i) "szülője" a verem tetején lévő hegy.
-if (kid != null) { up.put(kid, i); }: Ha a while ciklusban kivettünk hegyeket, az utoljára kivett hegy (kid) "szülője" a mostani hegy (i) lesz.
-stack.push(new Pair(heights[i], i));: A jelenlegi hegyet beteszi a verembe.
+<b>if (heights[i] < stack.peek().height) { ... }<b>: Ha a mostani hegy alacsonyabb, mint a verem tetején lévő, akkor az utóbbi lesz a szülője.
+<b>up.put(i, stack.peek().index);<b>: Hozzáadja a up térképhez, hogy a jelenlegi hegy (i) "szülője" a verem tetején lévő hegy.
+<b>if (kid != null) { up.put(kid, i); }<b>: Ha a while ciklusban kivettünk hegyeket, az utoljára kivett hegy (kid) "szülője" a mostani hegy (i) lesz.
+<b>stack.push(new Pair(heights[i], i));<b>: A jelenlegi hegyet beteszi a verembe.
 
 3. A leghosszabb út kiszámítása
 
-Map<Integer, Integer> memo = new HashMap<>();: Ez egy másik térkép, ami a memoizációhoz (dinamikus programozás) szolgál. Ide menti a már kiszámolt útvonalak hosszát.
-memo.put(null, 0);: A "gyökérelem" (a null indexű, virtuális hegy) mélységét 0-nak állítja be.
-int maxDepth = 0;: Ez a változó tárolja a valaha talált leghosszabb út hosszát.
-for (Integer key : up.keySet()) { ... }: Ez a ciklus végigmegy minden "gyerek" hegyen, ami a up térképben szerepel.
-maxDepth = Math.max(maxDepth, depth(key, up, memo));: Meghívja a depth metódust minden hegyre, hogy kiszámolja az onnan induló út hosszát, és a maxDepth változóban a legnagyobb értéket tartja meg.
-System.out.println(maxDepth);: Kiírja a végső eredményt a konzolra.
+<b>Map<Integer, Integer> memo = new HashMap<>();<b>: Ez egy másik térkép, ami a memoizációhoz (dinamikus programozás) szolgál. Ide menti a már kiszámolt útvonalak hosszát.
+<b>memo.put(null, 0);<b>: A "gyökérelem" (a null indexű, virtuális hegy) mélységét 0-nak állítja be.
+<b>int maxDepth = 0;<b>: Ez a változó tárolja a valaha talált leghosszabb út hosszát.
+<b>for (Integer key : up.keySet()) { ... }<b>: Ez a ciklus végigmegy minden "gyerek" hegyen, ami a up térképben szerepel.
+<b>maxDepth = Math.max(maxDepth, depth(key, up, memo));<b>: Meghívja a depth metódust minden hegyre, hogy kiszámolja az onnan induló út hosszát, és a maxDepth változóban a legnagyobb értéket tartja meg.
+<b>System.out.println(maxDepth);<b>: Kiírja a végső eredményt a konzolra.
 
 4. Segéd metódusok és osztályok
 
-private static int depth(...) { ... }: Ez egy rekurzív függvény.
-if (!memo.containsKey(i)) { ... }: Ha az adott hegy mélységét még nem számolta ki...
-memo.put(i, depth(up.get(i), up, memo) + 1);: ...akkor rekurzívan meghívja magát a szülőre, és az eredményhez hozzáad egyet, majd elmenti a memo térképbe.
-return memo.get(i);: Visszaadja a tárolt mélységértéket.
-static class Pair { ... }: Ez egy egyszerű belső osztály, ami két adatot tárol: egy hegy magasságát (height) és a pozícióját (index).
+<b>private static int depth(...) { ... }<b>: Ez egy rekurzív függvény.
+<b>if (!memo.containsKey(i)) { ... }<b>: Ha az adott hegy mélységét még nem számolta ki...
+<b>memo.put(i, depth(up.get(i), up, memo) + 1);<b>: ...akkor rekurzívan meghívja magát a szülőre, és az eredményhez hozzáad egyet, majd elmenti a memo térképbe.
+<b>return memo.get(i);<b>: Visszaadja a tárolt mélységértéket.
+<b>static class Pair { ... }<b>: Ez egy egyszerű belső osztály, ami két adatot tárol: egy hegy magasságát (height) és a pozícióját (index).
             </pre>
         </div>
     </div>
