@@ -254,14 +254,10 @@ public class JosephusProblemII {
 
         for (int i = n; i > 0; i--) {
             currentIndex = (currentIndex + k) % i;
-
             int removedIndex = ft.findKth(currentIndex + 1);
-
             ft.add(removedIndex, -1);
-
             out.print(removedIndex + 1 + " ");
         }
-
         out.close();
     }
 
