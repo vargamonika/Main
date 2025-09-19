@@ -126,14 +126,46 @@
             <li>out.print(removedIndex + 1 + " ");: Kiírja a gyerek sorszámát.</li>
         </ul>
 <p>Ez a megoldás a O(n * log^2 n) komplexitású, ami bőven a megadott időkorláton belül van.</p>
-
-
-        
-        <p>A program először beolvassa a hegyek magasságait. A felhasználónak be kell írnia a számokat, szóközökkel elválasztva. A program ezután a beolvasott szövegből egy listát készít a magasságokból.</p>
     </div>
 
-        <h2>3. A leghosszabb út kiszámítása</h2>
-        <p>Most, hogy megvan a családfa, már csak meg kell mérni a leghosszabb "ágat". Ezt egy különleges funkcióval csinálja a program, ami a **depth** nevet kapta. Ez a funkció megmondja, hogy egy adott hegy milyen mélyen van a családfában.</p>
+        <h2>3. A példa futtatása (n=7, k=2)</h2>
+        
+<p>1.	Kezdetben: A körben 7 gyerek van (1, 2, 3, 4, 5, 6, 7). Az currentIndex 0.</p>
+<p>2.	1. kör:</p>
+    <ul>
+<li>currentIndex = (0 + 2) % 7 = 2. A 3. gyereket távolítjuk el.</li>
+<li>Kör: (1, 2, 4, 5, 6, 7). A túlélők száma 6. A currentIndex 2.</li>
+<li>3 kiírva.</li>
+    <ul/>
+<p>3.	2. kör:</p>
+        <ul>
+<li>currentIndex = (2 + 2) % 6 = 4. A 6. gyereket távolítjuk el.</li>
+<li>Kör: (1, 2, 4, 5, 7). A túlélők száma 5. A currentIndex 4.</li>
+<li>6 kiírva.</li>
+        </ul>    
+<p>4.	3. kör:</p>
+        <ul>
+<li>currentIndex = (4 + 2) % 5 = 1. A 2. gyereket távolítjuk el.</li>
+<li>Kör: (1, 4, 5, 7). A túlélők száma 4. A currentIndex 1.</li>
+<li>2 kiírva.</li>
+<ul>
+<p>5.	4. kör:</p>
+<li>currentIndex = (1 + 2) % 4 = 3. A 7. gyereket távolítjuk el.</li>
+<li>Kör: (1, 4, 5). A túlélők száma 3. A currentIndex 3.</li>
+<li>7 kiírva.</li>
+<p>6.	5. kör:</p>
+<li>currentIndex = (3 + 2) % 3 = 2. Az 5. gyereket távolítjuk el.</li>
+<li>Kör: (1, 4). A túlélők száma 2. A currentIndex 2.</li>
+<li>5 kiírva.</li>
+<p>7.	6. kör:</p>
+<li>currentIndex = (2 + 2) % 2 = 0. Az 1. gyereket távolítjuk el.</li>
+<li>Kör: (4). A túlélők száma 1. A currentIndex 0.</li>
+<li>1 kiírva.</li>
+<p>8.	7. kör:</p>
+<li>currentIndex = (0 + 2) % 1 = 0. A 4. gyereket távolítjuk el.</li>
+<li>4 kiírva.</li>
+<p>A kiírt sorrend: 3 6 2 7 5 1 4.</p>
+
         <ul>
             <li>A funkció megnézi egy hegy szülőjét, majd megkérdezi tőle, hogy ő milyen mélyen van. Ehhez hozzáad egyet, és máris megkapja a saját mélységét.</li>
             <li>Hogy ne kelljen újra és újra kiszámolnia ugyanazt, a program **megjegyzi** (ezt hívják **memoizációnak**) az eredményeket egy "emlékeztető" táblázatba.</li>
@@ -254,37 +286,39 @@ public class JosephusProblemII {
 FenwickTree osztály
             
 Ez az osztály a Fenwick-fa adatszerkezetet valósítja meg, amely hatékonyan tudja kezelni a gyerekek "élő" és "eltávolított" állapotát. A fa a prefix összegek tárolására specializálódott.
-private int[] tree;: Ez a tömb a Fenwick-fa belső reprezentációja.
-private int size;: A gyerekek teljes számát tárolja.
-public FenwickTree(int size): Ez a konstruktor inicializálja a fát a megadott mérettel.
-public void add(int index, int value):
-index++;: Mivel a fa 1-től indexelt, a bemeneti indexet eggyel megnöveli.
-while (index <= size) { ... }: Ez a ciklus addig fut, amíg az index a fán belül van.
-tree[index] += value;: Hozzáadja a megadott értéket a fa adott pontjához.
-index += index & (-index);: Ez a legfontosabb sor. Egy bitművelet segítségével megkeresi a következő olyan indexet a fában, amit szintén frissíteni kell. A (-index) binárisan a kettes komplemensét adja vissza, és az & bitenkénti ÉS operátorral a legutolsó beállított bitet találja meg, ezzel navigálva a fában felfelé.
-public int query(int index):
-index++;: A Fenwick-fa indexe 1-től kezdődik, ezért a bemeneti indexet megnöveli.
-int sum = 0;: Inicializálja az összeget.
-while (index > 0) { ... }: Visszafelé haladva a fa gyökere felé számolja az elemek összegét.
-sum += tree[index];: Hozzáadja az aktuális faelem értékét az összeghez.
-index -= index & (-index);: Ismét a bitművelet, de most az ellentétes irányba navigál, hogy az összes szükséges elemet összegezze.
-public int findKth(int k): Ez a metódus bináris keresést használ a Fenwick-fán, hogy megtalálja a k-adik "élő" gyereket.
-while (low <= high): A standard bináris keresési ciklus.
-if (query(mid) >= k): Ellenőrzi, hogy a mid indexig lévő gyerekek száma eléri-e a k-t. Ha igen, a result-ba menti az indexet, és a keresési tartományt balra szűkíti, hátha van korábbi érvényes index.
-else: Ha nem, a keresési tartományt jobbra tolja.
+<b>private int[] tree;</b>: Ez a tömb a Fenwick-fa belső reprezentációja.
+<b>private int size;</b>: A gyerekek teljes számát tárolja.
+<b>public FenwickTree(int size):</b> Ez a konstruktor inicializálja a fát a megadott mérettel.
+<b>public void add(int index, int value):</b>
+<b>index++;</b>: Mivel a fa 1-től indexelt, a bemeneti indexet eggyel megnöveli.
+<b>while (index <= size) { ... }</b>: Ez a ciklus addig fut, amíg az index a fán belül van.
+<b>tree[index] += value;</b>: Hozzáadja a megadott értéket a fa adott pontjához.
+<b>index += index & (-index);</b>: Ez a legfontosabb sor. Egy bitművelet segítségével megkeresi a következő olyan indexet a fában, amit szintén frissíteni kell. A (-index) binárisan a kettes komplemensét adja vissza, és az & bitenkénti ÉS operátorral a legutolsó beállított bitet találja meg, ezzel navigálva a fában felfelé.
+<b>public int query(int index):</b>
+<b>index++;</b>: A Fenwick-fa indexe 1-től kezdődik, ezért a bemeneti indexet megnöveli.
+<b>int sum = 0;</b>: Inicializálja az összeget.
+<b>while (index > 0) { ... }</b>: Visszafelé haladva a fa gyökere felé számolja az elemek összegét.
+<b>sum += tree[index];</b>: Hozzáadja az aktuális faelem értékét az összeghez.
+<b>index -= index & (-index);</b>: Ismét a bitművelet, de most az ellentétes irányba navigál, hogy az összes szükséges elemet összegezze.
+<b>public int findKth(int k)</b>: Ez a metódus bináris keresést használ a Fenwick-fán, hogy megtalálja a k-adik "élő" gyereket.
+<b>while (low <= high)</b>: A standard bináris keresési ciklus.
+<b>if (query(mid) >= k)</b>: Ellenőrzi, hogy a mid indexig lévő gyerekek száma eléri-e a k-t. Ha igen, a result-ba menti az indexet, és a keresési tartományt balra szűkíti, hátha van korábbi érvényes index.
+<b>else</b>: Ha nem, a keresési tartományt jobbra tolja.
+    
 main metódus
+    
 Ez a program fő belépési pontja, ami a Josephus-probléma logikáját valósítja meg.
-InputReader in = new InputReader(inputStream);: Egy gyors beolvasó osztályt inicializál.
-int n = in.nextInt(); int k = in.nextInt();: Beolvassa a gyerekek számát (n) és a lépésközt (k).
-FenwickTree ft = new FenwickTree(n);: Létrehoz egy Fenwick-fát n gyerek számára.
-for (int i = 0; i < n; i++) { ft.add(i, 1); }: Kezdetben minden gyerek "él", így a fát feltölti 1-esekkel.
-int currentIndex = 0;: Ez a változó a kör aktuális pozícióját tárolja.
-for (int i = n; i > 0; i--) { ... }: A fő ciklus, ami minden lépésben egy gyereket eliminál. Az i változó a körben lévő, még élő gyerekek számát mutatja.
-currentIndex = (currentIndex + k) % i;: Ez a moduláris aritmetika kiszámítja az eltávolítandó gyerek relatív pozícióját a jelenlegi körben.
-int removedIndex = ft.findKth(currentIndex + 1);: A findKth metódus megkeresi a gyerek tényleges (0-tól indexelt) pozícióját a teljes n gyerekből álló sorozatban.
-ft.add(removedIndex, -1);: A FenwickTree add metódusával jelzi, hogy a gyerek már nincs a körben.
-out.print(removedIndex + 1 + " ");: Kiírja az eltávolított gyerek sorszámát (mivel a feladat 1-től számoz, a 0-tól indexelt eredményhez 1-et ad).
-out.close();: Lezárja a kimeneti streamet.
+<b>InputReader in = new InputReader(inputStream);</b>: Egy gyors beolvasó osztályt inicializál.
+<b>int n = in.nextInt(); int k = in.nextInt();</b>: Beolvassa a gyerekek számát (n) és a lépésközt (k).
+<b>FenwickTree ft = new FenwickTree(n);</b>: Létrehoz egy Fenwick-fát n gyerek számára.
+<b>for (int i = 0; i < n; i++) { ft.add(i, 1); }</b>: Kezdetben minden gyerek "él", így a fát feltölti 1-esekkel.
+<b>int currentIndex = 0;</b>: Ez a változó a kör aktuális pozícióját tárolja.
+<b>for (int i = n; i > 0; i--) { ... }</b>: A fő ciklus, ami minden lépésben egy gyereket eliminál. Az i változó a körben lévő, még élő gyerekek számát mutatja.
+<b>currentIndex = (currentIndex + k) % i;</b>: Ez a moduláris aritmetika kiszámítja az eltávolítandó gyerek relatív pozícióját a jelenlegi körben.
+<b>int removedIndex = ft.findKth(currentIndex + 1);</b>: A findKth metódus megkeresi a gyerek tényleges (0-tól indexelt) pozícióját a teljes n gyerekből álló sorozatban.
+<b>ft.add(removedIndex, -1);</b>: A FenwickTree add metódusával jelzi, hogy a gyerek már nincs a körben.
+<b>out.print(removedIndex + 1 + " ");</b>: Kiírja az eltávolított gyerek sorszámát (mivel a feladat 1-től számoz, a 0-tól indexelt eredményhez 1-et ad).
+<b>out.close();</b>: Lezárja a kimeneti streamet.
 
 InputReader osztály
 Ez egy segédosztály, ami a konzolról történő gyors beolvasást teszi lehetővé, különösen nagy bemeneti adatok esetén. Puffereléssel olvassa be a sorokat, majd egy StringTokenizer segítségével darabolja a szóközök mentén, így gyorsabb, mint a standard Scanner.
