@@ -250,6 +250,45 @@ public class JosephusProblemII {
                     throw new RuntimeException(e);
                 }
 
+
+FenwickTree osztály
+            
+Ez az osztály a Fenwick-fa adatszerkezetet valósítja meg, amely hatékonyan tudja kezelni a gyerekek "élő" és "eltávolított" állapotát. A fa a prefix összegek tárolására specializálódott.
+private int[] tree;: Ez a tömb a Fenwick-fa belső reprezentációja.
+private int size;: A gyerekek teljes számát tárolja.
+public FenwickTree(int size): Ez a konstruktor inicializálja a fát a megadott mérettel.
+public void add(int index, int value):
+index++;: Mivel a fa 1-től indexelt, a bemeneti indexet eggyel megnöveli.
+while (index <= size) { ... }: Ez a ciklus addig fut, amíg az index a fán belül van.
+tree[index] += value;: Hozzáadja a megadott értéket a fa adott pontjához.
+index += index & (-index);: Ez a legfontosabb sor. Egy bitművelet segítségével megkeresi a következő olyan indexet a fában, amit szintén frissíteni kell. A (-index) binárisan a kettes komplemensét adja vissza, és az & bitenkénti ÉS operátorral a legutolsó beállított bitet találja meg, ezzel navigálva a fában felfelé.
+public int query(int index):
+index++;: A Fenwick-fa indexe 1-től kezdődik, ezért a bemeneti indexet megnöveli.
+int sum = 0;: Inicializálja az összeget.
+while (index > 0) { ... }: Visszafelé haladva a fa gyökere felé számolja az elemek összegét.
+sum += tree[index];: Hozzáadja az aktuális faelem értékét az összeghez.
+index -= index & (-index);: Ismét a bitművelet, de most az ellentétes irányba navigál, hogy az összes szükséges elemet összegezze.
+public int findKth(int k): Ez a metódus bináris keresést használ a Fenwick-fán, hogy megtalálja a k-adik "élő" gyereket.
+while (low <= high): A standard bináris keresési ciklus.
+if (query(mid) >= k): Ellenőrzi, hogy a mid indexig lévő gyerekek száma eléri-e a k-t. Ha igen, a result-ba menti az indexet, és a keresési tartományt balra szűkíti, hátha van korábbi érvényes index.
+else: Ha nem, a keresési tartományt jobbra tolja.
+main metódus
+Ez a program fő belépési pontja, ami a Josephus-probléma logikáját valósítja meg.
+InputReader in = new InputReader(inputStream);: Egy gyors beolvasó osztályt inicializál.
+int n = in.nextInt(); int k = in.nextInt();: Beolvassa a gyerekek számát (n) és a lépésközt (k).
+FenwickTree ft = new FenwickTree(n);: Létrehoz egy Fenwick-fát n gyerek számára.
+for (int i = 0; i < n; i++) { ft.add(i, 1); }: Kezdetben minden gyerek "él", így a fát feltölti 1-esekkel.
+int currentIndex = 0;: Ez a változó a kör aktuális pozícióját tárolja.
+for (int i = n; i > 0; i--) { ... }: A fő ciklus, ami minden lépésben egy gyereket eliminál. Az i változó a körben lévő, még élő gyerekek számát mutatja.
+currentIndex = (currentIndex + k) % i;: Ez a moduláris aritmetika kiszámítja az eltávolítandó gyerek relatív pozícióját a jelenlegi körben.
+int removedIndex = ft.findKth(currentIndex + 1);: A findKth metódus megkeresi a gyerek tényleges (0-tól indexelt) pozícióját a teljes n gyerekből álló sorozatban.
+ft.add(removedIndex, -1);: A FenwickTree add metódusával jelzi, hogy a gyerek már nincs a körben.
+out.print(removedIndex + 1 + " ");: Kiírja az eltávolított gyerek sorszámát (mivel a feladat 1-től számoz, a 0-tól indexelt eredményhez 1-et ad).
+out.close();: Lezárja a kimeneti streamet.
+
+InputReader osztály
+Ez egy segédosztály, ami a konzolról történő gyors beolvasást teszi lehetővé, különösen nagy bemeneti adatok esetén. Puffereléssel olvassa be a sorokat, majd egy StringTokenizer segítségével darabolja a szóközök mentén, így gyorsabb, mint a standard Scanner.
+            
             </pre>
         </div>
     </div>
