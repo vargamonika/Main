@@ -91,7 +91,7 @@
 
 <div class="container">
     <header>
-        <h1>Mountain Range</h1>
+        <h1>Josephus Problem II</h1>
         <p>Példa input: 10 20 15 17 35 25 40 12 19 13 12</p>
     </header>
 
@@ -100,28 +100,38 @@
     </div>
 
     <div class="section">
-        <p>Ezt a programot úgy kell elképzelni, mint egy játékot, ahol van egy sor hegy, és meg kell találni a leghosszabb ösvényt, amin végig tudsz menni úgy, hogy **mindig lefelé haladsz**.</p>
-        <p>A program ezt a feladatot három fő lépésben oldja meg:</p>
-    </div>
+
+
+<p>A Josephus Problem II egy matematikai és algoritmikus feladvány, amely egy körben álló emberek eliminációját modellezi.</p>
+<p>A feladat szövege szerint:</p>
+        <ul>
+            <li>n gyerek van egy körben, 1-től n-ig számozva.</li>
+            <li>A játék során ismételten k gyereket kihagynak, és a következő gyereket eltávolítják a körből.</li>
+            <li>A feladat az, hogy milyen sorrendben távolítják el a gyerekeket.</li>
+        </ul>    
+<p>Mivel a gyerekek száma nagyon nagy lehet (2 * 10^5), és az eliminálás sorrendjét kell megadni, egy egyszerű lista használata túl lassú lenne. Ezért a program egy Fenwick-fa (vagy Binary Indexed Tree) nevű adatszerkezetet használ a hatékonyság érdekében. Ez az adatszerkezet lehetővé teszi, hogy a gyerekek megkeresése és eltávolítása gyors legyen.</p>
 
     <div class="section">
-        <h2>1. Beolvasás és előkészítés</h2>
+        <h2>1.  program működésének magyarázata</h2>
+
+<p>1.	Fenwick-fa (Binary Indexed Tree): A FenwickTree osztály felelős a gyerekek hatékony nyilvántartásáért. Kezdetben minden gyerek egy-egy 1-es értéket kap a fában, ami azt jelenti, hogy "él". Ha egy gyereket eltávolítunk, az értékét 0-ra állítjuk. A fa lehetővé teszi, hogy O(log n) idő alatt kiszámítsuk, hány élő gyerek van egy adott pozícióig.</p>
+<p>2.	findKth(k) metódus: Ez a legfontosabb rész. Bináris keresést használ a Fenwick-fán, hogy O(log n * log n) idő alatt megtalálja a k-adik élő gyereket. A keresés abból áll, hogy egy "gyorsítótár" segítségével megkeressük azt a pozíciót, ahol a gyerekszám megegyezik a keresett sorszámmal.</p>
+<p>3.	Fő logika a main metódusban:</p>
+        <ul>
+            <li>Inicializálja a Fenwick-fát, és feltölti n darab 1-es értékkel.</li>
+            <li>Egy for ciklus n-től 1-ig fut, minden lépésben egy gyereket eltávolítva.</li>
+            <li>currentIndex = (currentIndex + k) % i;: Ez a moduláris aritmetika kiszámítja, hogy hányadik gyereket kell eltávolítani a jelenlegi körben lévő élő gyerekek között. Az i értéke a körben lévő gyerekek számát jelenti.</li>
+            <li>int removedIndex = ft.findKth(currentIndex + 1);: A findKth metódus megtalálja a tényleges indexét a gyerektömbben.</li>
+            <li>ft.add(removedIndex, -1);: Eltávolítja a gyereket a Fenwick-fáról, csökkentve az értékét 1-gyel.</li>
+            <li>out.print(removedIndex + 1 + " ");: Kiírja a gyerek sorszámát.</li>
+        </ul>
+<p>Ez a megoldás a O(n * log^2 n) komplexitású, ami bőven a megadott időkorláton belül van.</p>
+
+
+        
         <p>A program először beolvassa a hegyek magasságait. A felhasználónak be kell írnia a számokat, szóközökkel elválasztva. A program ezután a beolvasott szövegből egy listát készít a magasságokból.</p>
     </div>
 
-    <div class="section">
-        <h2>2. A "szülő" hegyek megkeresése</h2>
-        <p>Ez a legtrükkösebb rész. A program sorra veszi a hegyeket, és minden hegyhez megkeresi azt a **legközelebbi, nála magasabb hegyet**, ami "fölötte" van az ereszkedő úton. Ezt a magasabb hegyet hívjuk a **szülőnek**. Képzeld el, hogy a hegyeket egymás után rakod egy **verembe (stack)**.</p>
-        <p>A verem úgy működik, mint egy tálca a menzán: amit utoljára raktál rá, azt veszed le először.</p>
-        <p>A program végigmegy a hegyek listáján:</p>
-        <ul>
-            <li>Ha a mostani hegy **alacsonyabb**, mint a verem tetején lévő, akkor az lesz a szülője. Ezt a párosítást el is menti.</li>
-            <li>Ha a mostani hegy **magasabb**, mint a verem tetején lévő, akkor kiveszi azt a veremből, mert a mostani hegy árnyékolja. Ezt addig csinálja, amíg nem talál egy nála magasabbat, vagy ki nem ürül a verem.</li>
-        </ul>
-        <p>Ezzel a módszerrel a program egy "családfát" épít a hegyekből, ahol minden hegynek van egy szülője, kivéve a legmagasabbakat.</p>
-    </div>
-
-    <div class="section">
         <h2>3. A leghosszabb út kiszámítása</h2>
         <p>Most, hogy megvan a családfa, már csak meg kell mérni a leghosszabb "ágat". Ezt egy különleges funkcióval csinálja a program, ami a **depth** nevet kapta. Ez a funkció megmondja, hogy egy adott hegy milyen mélyen van a családfában.</p>
         <ul>
