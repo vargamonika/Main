@@ -145,66 +145,111 @@
         <h2>Java</h2>
         <div class="code-container">
             <pre>
-public class MountainGliding {
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        // Set recursion limit is not directly applicable in Java, but we can manage stack depth.
+import java.io.OutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintWriter;
+import java.util.StringTokenizer;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 
-        scanner.nextLine();
-        String[] heightsInput = scanner.nextLine().split(" ");
+/**
+ * A Josephus Problem II megoldása egy Fenwick-fa (Binary Indexed Tree) segítségével.
+ * Ez a megoldás hatékonyan kezeli a nagyméretű bemeneteket is.
+ */
+public class JosephusProblemII {
 
-        int[] heights = new int[heightsInput.length];
+    static class FenwickTree {
+        private int[] tree;
+        private int size;
 
-        for (int i = 0; i < heightsInput.length; i++) {
-            heights[i] = Integer.parseInt(heightsInput[i]);
+        public FenwickTree(int size) {
+            this.size = size;
+            this.tree = new int[size + 1];
         }
 
-        Map<Integer, Integer> up = new HashMap<>();
-        Stack<Pair> stack = new Stack<>();
-        stack.push(new Pair(Double.MAX_VALUE, null));
-
-        for (int i = 0; i < heights.length; i++) {
-            Integer kid = null;
-            while (heights[i] > stack.peek().height) {
-                kid = stack.pop().index;
+        public void add(int index, int value) {
+            index++;
+            while (index <= size) {
+                tree[index] += value;
+                index += index & (-index);
             }
-            if (heights[i] < stack.peek().height) {
-                up.put(i, stack.peek().index);
-                if (kid != null) {
-                    up.put(kid, i);
+        }
+
+        public int query(int index) {
+            index++;
+            int sum = 0;
+            while (index > 0) {
+                sum += tree[index];
+                index -= index & (-index);
+            }
+            return sum;
+        }
+
+        public int findKth(int k) {
+            int low = 0;
+            int high = size - 1;
+            int result = -1;
+
+            while (low <= high) {
+                int mid = low + (high - low) / 2;
+                if (query(mid) >= k) {
+                    result = mid;
+                    high = mid - 1;
+                } else {
+                    low = mid + 1;
                 }
-                stack.push(new Pair(heights[i], i));
             }
-        }
-
-        Map<Integer, Integer> memo = new HashMap<>();
-        memo.put(null, 0);
-
-        int maxDepth = 0;
-        for (Integer key : up.keySet()) {
-            maxDepth = Math.max(maxDepth, depth(key, up, memo));
-        }
-
-        System.out.println(maxDepth);
-    }
-
-    private static int depth(Integer i, Map<Integer, Integer> up, Map<Integer, Integer> memo) {
-        if (!memo.containsKey(i)) {
-            memo.put(i, depth(up.get(i), up, memo) + 1);
-        }
-        return memo.get(i);
-    }
-
-    static class Pair {
-        double height;
-        Integer index;
-
-        Pair(double height, Integer index) {
-            this.height = height;
-            this.index = index;
+            return result;
         }
     }
-}
+
+    public static void main(String[] args) {
+        InputStream inputStream = System.in;
+        OutputStream outputStream = System.out;
+        InputReader in = new InputReader(inputStream);
+        PrintWriter out = new PrintWriter(outputStream);
+
+        int n = in.nextInt();
+        int k = in.nextInt();
+
+        FenwickTree ft = new FenwickTree(n);
+        for (int i = 0; i < n; i++) {
+            ft.add(i, 1);
+        }
+
+        int currentIndex = 0;
+
+        for (int i = n; i > 0; i--) {
+            currentIndex = (currentIndex + k) % i;
+
+            int removedIndex = ft.findKth(currentIndex + 1);
+
+            ft.add(removedIndex, -1);
+
+            out.print(removedIndex + 1 + " ");
+        }
+
+        out.close();
+    }
+
+    static class InputReader {
+        public BufferedReader reader;
+        public StringTokenizer tokenizer;
+
+        public InputReader(InputStream stream) {
+            reader = new BufferedReader(new InputStreamReader(stream), 32768);
+            tokenizer = null;
+        }
+
+        public String next() {
+            while (tokenizer == null || !tokenizer.hasMoreTokens()) {
+                try {
+                    tokenizer = new StringTokenizer(reader.readLine());
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+
             </pre>
         </div>
     </div>
