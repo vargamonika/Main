@@ -110,20 +110,20 @@ Ez a klasszikus Csúcserősen Összefüggő Komponensek (Strongly Connected Comp
 <p>1.	Modell: A bolygók (N darab) a csúcsok, a teleportok (M darab) az irányított élek. Ez egy irányított gráfot alkot.</p>
 <p>2.	Királyság (SCC) Definíciója: Két bolygó, A és B ugyanahhoz a királysághoz tartozik, ha:</p>
         <ul>
-<li>o	Van út A-ból B-be.</li>
-<li>o	ÉS van út B-ből A-ba.</li>
-<li>o	Ez pontosan megegyezik az SCC matematikai definíciójával.</li>
+<li>Van út A-ból B-be.</li>
+<li>ÉS van út B-ből A-ba.</li>
+<li>Ez pontosan megegyezik az SCC matematikai definíciójával.</li>
         </ul>
 <p>3.	Cél:</p>
         <ul>
-<li>o	Megtalálni az összes ilyen királyságot (SCC-t).</li>
-<li>o	Kiszámolni a királyságok számát (K).</li>
-<li>o	Minden bolygóhoz hozzárendelni a királyság sorszámát (1 és K között).</li>
+<li>Megtalálni az összes ilyen királyságot (SCC-t).</li>
+<li>Kiszámolni a királyságok számát (K).</li>
+<li>Minden bolygóhoz hozzárendelni a királyság sorszámát (1 és K között).</li>
         </ul>
     </div>
 
     <div class="section">
-        <h2>2. A "szülő" hegyek megkeresése</h2>
+        <h2>2. A Megoldás: Kosaraju vagy Tarjan Algoritmus</h2>
         
         <p>A program sorra veszi a hegyeket, és verem (stack) segítségével épít szülő–gyerek kapcsolatokat közöttük. Itt a szülő mindig egy magasabb hegy (vagy a sentinel), nem pedig egy alacsonyabb.</p>
         <p>Képzeld el, hogy a hegyeket egymás után rakod egy verembe (stack). A verem tetején mindig az a legutóbb látott, még „aktív” magasabb hegy áll, amihez viszonyítjuk a következő bejövő hegyet.</p>
