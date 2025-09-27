@@ -100,13 +100,26 @@
     </div>
 
     <div class="section">
-        <p>Ezt a programot úgy kell elképzelni, mint egy játékot, ahol van egy sor hegy, és meg kell találni a leghosszabb utat, amin végig tudunk menni úgy, hogy **mindig lefelé haladunk**.</p>
-        <p>A program ezt a feladatot három fő lépésben oldja meg:</p>
+       <p>A feladat lényege, hogy egy irányított gráfot kell felosztani olyan komponensekre, ahol a komponensen belüli bármely két pont (bolygó) között van oda-vissza út.
+Ez a klasszikus Csúcserősen Összefüggő Komponensek (Strongly Connected Components, SCC) megtalálásának feladata az informatikában. </p>
     </div>
 
     <div class="section">
-        <h2>1. Beolvasás és előkészítés</h2>
-        <p>A program először beolvassa a hegyek magasságait. A felhasználónak be kell írnia n darab számot, szóközökkel elválasztva. A program ezután a beolvasott szövegből egy listát készít a magasságokból.</p>
+        <h2>1. A Feladat Részletezése</h2>
+
+<p>1.	Modell: A bolygók (N darab) a csúcsok, a teleportok (M darab) az irányított élek. Ez egy irányított gráfot alkot.</p>
+<p>2.	Királyság (SCC) Definíciója: Két bolygó, A és B ugyanahhoz a királysághoz tartozik, ha:</p>
+        <ul>
+<li>o	Van út A-ból B-be.</li>
+<li>o	ÉS van út B-ből A-ba.</li>
+<li>o	Ez pontosan megegyezik az SCC matematikai definíciójával.</li>
+        </ul>
+<p>3.	Cél:</p>
+        <ul>
+<li>o	Megtalálni az összes ilyen királyságot (SCC-t).</li>
+<li>o	Kiszámolni a királyságok számát (K).</li>
+<li>o	Minden bolygóhoz hozzárendelni a királyság sorszámát (1 és K között).</li>
+        </ul>
     </div>
 
     <div class="section">
