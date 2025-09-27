@@ -125,11 +125,14 @@ Ez a klasszikus Csúcserősen Összefüggő Komponensek (Strongly Connected Comp
     <div class="section">
         <h2>2. A Megoldás: Kosaraju vagy Tarjan Algoritmus</h2>
 
-<p>A feladat megoldására a leggyakoribb és leghatékonyabb algoritmus a már említett Kosaraju algoritmusa, amelyet a korábban bemutatott Java kód is implementál:</p>
+<p>A feladat megoldására a leggyakoribb és leghatékonyabb algoritmus a már említett Kosaraju algoritmusa, amelyet a korábban bemutatott Java
+    kód is implementál:</p>
 <ul>
-<li>1.	Első DFS (Befejezési Idő): Bejárjuk az eredeti gráfot, és minden bolygóra feljegyezzük a befejezési időt (mikor végez az adott ág rekurzív bejárása).</li>
+<li>1.	Első DFS (Befejezési Idő): Bejárjuk az eredeti gráfot, és minden bolygóra feljegyezzük a befejezési időt (mikor végez
+    az adott ág rekurzív bejárása).</li>
 <li>2.	Fordított Gráf: Létrehozzuk a gráf transzponáltját (az összes él irányát megfordítjuk).</li>
-<li>3.	Második DFS (SCC Keresés): Elindítjuk a DFS-t a fordított gráfon, de nem tetszőleges sorrendben, hanem a bolygók első DFS-ben kapott befejezési idejének csökkenő
+<li>3.	Második DFS (SCC Keresés): Elindítjuk a DFS-t a fordított gráfon, de nem tetszőleges sorrendben, hanem a bolygók első
+    DFS-ben kapott befejezési idejének csökkenő
     sorrendje szerint. Minden egyes új DFS-indítás egy új, különálló királyságot (SCC-t) talál.</li>
 </ul>
     <p>Az algoritmussal megtalálható, hogy a 3-as bolygó elérhető a 4-esből, és a 4-es is elérhető a 3-asból, de egyik sem érhető el az 1-esből, ezért:</p>
@@ -258,7 +261,8 @@ public class KingdomCses {
 
 A kód részletes magyarázata
         
-Ez a Java kód egy klasszikus gráfalgoritmust valósít meg, a Kosaraju algoritmust vagy a Tarjan algoritmust a Csúcserősen Összefüggő Komponensek (Strongly Connected Components, SCC) megtalálására irányított gráfokban.
+Ez a Java kód egy klasszikus gráfalgoritmust valósít meg, a Kosaraju algoritmust vagy a Tarjan algoritmust a Csúcserősen
+            Összefüggő Komponensek (Strongly Connected Components, SCC) megtalálására irányított gráfokban.
 
             1. Importok és Osztálydefiníciók
             
@@ -286,13 +290,15 @@ Ez az osztály a standard bemenet (konzol) gyorsabb beolvasására szolgál nagy
             
 <b>static long gcd(long a, long b) {</b>	Euklideszi algoritmus a legnagyobb közös osztó (GCD) rekurzív kiszámítására. (Bár a fő feladathoz nem használt.)
 <b>return b == 0 ? a : gcd(b, a % b);</b>	Rekurzív hívás.
-<b>static void dfs(int node, List<List<Long>> adj, long[] finish, long[] timer, int[] vis) {</b>	Első Mélységi Keresés (DFS1): A bejárási befejezési idők kiszámítása.
+<b>static void dfs(int node, List<List<Long>> adj, long[] finish, long[] timer, int[] vis) {</b>	Első Mélységi Keresés (DFS1): A bejárási 
+            befejezési idők kiszámítása.
 <b>vis[node] = 1;</b>	Megjelöli a csúcsot látogatottként.
 <b>for (long i : adj.get(node)) {</b>	Végigmegy a csúcs szomszédjain (kimenő éleken).
 <b>if (vis[(int) i] == 0) {</b>	Ha a szomszéd még nem látogatott.
 <b>dfs((int) i, adj, finish, timer, vis);</b>	Rekurzívan hívja a DFS-t a szomszédra.
 <b>finish[node] = timer[0]++;</b>	Beállítja a csúcs befejezési idejét (finish[node]), és növeli az időzítőt (timer[0]).
-<b>static void dfs2(int node, int[] vis, List<List<Long>> adj, long king, long[] kingdom) {</b>	Második Mélységi Keresés (DFS2): A Csúcserősen Összefüggő Komponensek (SCC) meghatározása.
+<b>static void dfs2(int node, int[] vis, List<List<Long>> adj, long king, long[] kingdom) {</b>	Második Mélységi Keresés (DFS2): A Csúcserősen
+            Összefüggő Komponensek (SCC) meghatározása.
 <b>vis[node] = 1;</b>	Megjelöli a csúcsot látogatottként.
 <b>kingdom[node] = king;</b>	Hozzárendeli az aktuális komponens (királyság, king) azonosítóját a csúcshoz.
 <b>for (long i : adj.get(node)) {</b>	Végigmegy a csúcs szomszédjain a fordított gráfban (bejövő élek).
