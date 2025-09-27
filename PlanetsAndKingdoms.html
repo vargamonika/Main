@@ -124,6 +124,23 @@ Ez a klasszikus Csúcserősen Összefüggő Komponensek (Strongly Connected Comp
 
     <div class="section">
         <h2>2. A Megoldás: Kosaraju vagy Tarjan Algoritmus</h2>
+
+<p>A feladat megoldására a leggyakoribb és leghatékonyabb algoritmus a már említett Kosaraju algoritmusa, amelyet a korábban bemutatott Java kód is implementál:</p>
+<ul>
+<li>1.	Első DFS (Befejezési Idő): Bejárjuk az eredeti gráfot, és minden bolygóra feljegyezzük a befejezési időt (mikor végez az adott ág rekurzív bejárása).</li>
+<li>2.	Fordított Gráf: Létrehozzuk a gráf transzponáltját (az összes él irányát megfordítjuk).</li>
+<li>3.	Második DFS (SCC Keresés): Elindítjuk a DFS-t a fordított gráfon, de nem tetszőleges sorrendben, hanem a bolygók első DFS-ben kapott befejezési idejének csökkenő
+    sorrendje szerint. Minden egyes új DFS-indítás egy új, különálló királyságot (SCC-t) talál.</li>
+</ul>
+    <p>Az algoritmussal megtalálható, hogy a 3-as bolygó elérhető a 4-esből, és a 4-es is elérhető a 3-asból, de egyik sem érhető el az 1-esből, ezért:</p>
+        <ul></ul>
+<li>{1,2,3} az 1. királyság.</li>
+<li>{4,5} a 2. királyság.</li>
+        </ul>
+<p>A kimenet tehát: 2 királyság, és a bolygók azonosítói: 1 1 1 2 2.</p>
+
+
+        
         
         <p>A program sorra veszi a hegyeket, és verem (stack) segítségével épít szülő–gyerek kapcsolatokat közöttük. Itt a szülő mindig egy magasabb hegy (vagy a sentinel), nem pedig egy alacsonyabb.</p>
         <p>Képzeld el, hogy a hegyeket egymás után rakod egy verembe (stack). A verem tetején mindig az a legutóbb látott, még „aktív” magasabb hegy áll, amihez viszonyítjuk a következő bejövő hegyet.</p>
