@@ -139,140 +139,183 @@ Ez a klasszikus Csúcserősen Összefüggő Komponensek (Strongly Connected Comp
         </ul>
 <p>A kimenet tehát: 2 királyság, és a bolygók azonosítói: 1 1 1 2 2.</p>
 
-
-        
-        
-        <p>A program sorra veszi a hegyeket, és verem (stack) segítségével épít szülő–gyerek kapcsolatokat közöttük. Itt a szülő mindig egy magasabb hegy (vagy a sentinel), nem pedig egy alacsonyabb.</p>
-        <p>Képzeld el, hogy a hegyeket egymás után rakod egy verembe (stack). A verem tetején mindig az a legutóbb látott, még „aktív” magasabb hegy áll, amihez viszonyítjuk a következő bejövő hegyet.</p>
-        <p>A verem úgy működik, hogy amit utoljára raktál bele, azt veszed ki először (LIFO).<p>
-        <p>A program végigmegy a hegyek listáján és minden lépésben a következőt csinálja:</p>
-        <ul>
-            <li>Amíg a mostani hegy magasabb, mint a verem tetején lévő hegy, kivesszük (pop) a veremből a tetejét. (Ezzel eltávolítjuk azokat a nála kisebb hegyeket, amelyekre most már „rátettünk” egy magasabbat.)
-            <li>Ha a mostani hegy alacsonyabb, mint a verem tetején lévő, akkor a verem tetején lévő (korábban látott) magasabb hegy lesz a mostani hegy szülője — ezt a kapcsolatot elmenti.
-            <li>Ha a fenti pop művelet során voltak kivett, kisebb hegyek, akkor a legutoljára kivett ilyen hegy szülőjét a mostani hegyre állítja (mivel most a mostani hegy az, amelyik fölé érkezett).
-            <li>Végül a mostani hegyet berakja (push) a verembe.
-        </ul>
-        <p>Ezzel a szabállyal egy irányított szerkezet (fa) jön létre: minden csomópont mutat egy magasabb csomópontra (szülőre), vagy a sentinelre (null). A program ezután memoizált rekurzióval kiszámolja minden csúcstól a szülői láncon lefelé elérhető hosszt, és ezek közül választja a legnagyobbat — ez adja a leghosszabb ereszkedő út hosszát.</p>
-    </div>
-
-    <div class="section">
-        <h2>3. A leghosszabb út kiszámítása</h2>
-        <p>Most, hogy megvan a családfa, már csak meg kell mérni a leghosszabb "ágat". Ezt egy különleges funkcióval csinálja a program, ami a **depth** nevet kapta. Ez a funkció megmondja, hogy egy adott hegy milyen mélyen van a családfában.</p>
-        <ul>
-            <li>A funkció megnézi egy hegy szülőjét, majd megkérdezi tőle, hogy ő milyen mélyen van. Ehhez hozzáad egyet, és máris megkapja a saját mélységét.</li>
-            <li>Hogy ne kelljen újra és újra kiszámolnia ugyanazt, a program **megjegyzi** (ezt hívják **memoizációnak**) az eredményeket egy "emlékeztető" táblázatba.</li>
-        </ul>
-        <p>Végül a program végigmegy az összes hegyen, kiszámolja a "mélységüket", és kiírja a legnagyobb számot. Ez a szám lesz a leghosszabb ereszkedő ösvény hossza.</p>
-    </div>
-
     <div class="section">
         <h2>Java kód</h2>
         <div class="code-container">
             <pre>
-public class MountainGliding {
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        // Set recursion limit is not directly applicable in Java, but we can manage stack depth.
+import java.util.*;
+import java.io.*;
 
-        scanner.nextLine();
-        String[] heightsInput = scanner.nextLine().split(" ");
-
-        int[] heights = new int[heightsInput.length];
-
-        for (int i = 0; i < heightsInput.length; i++) {
-            heights[i] = Integer.parseInt(heightsInput[i]);
+public class KingdomCses {
+    static class FastReader {
+        BufferedReader br;
+        StringTokenizer st;
+ 
+        public FastReader() {
+            br = new BufferedReader(new InputStreamReader(System.in));
         }
-
-        Map<Integer, Integer> up = new HashMap<>();
-        Stack<Pair> stack = new Stack<>();
-        stack.push(new Pair(Double.MAX_VALUE, null));
-
-        for (int i = 0; i < heights.length; i++) {
-            Integer kid = null;
-            while (heights[i] > stack.peek().height) {
-                kid = stack.pop().index;
-            }
-            if (heights[i] < stack.peek().height) {
-                up.put(i, stack.peek().index);
-                if (kid != null) {
-                    up.put(kid, i);
+ 
+        String next() {
+            while (st == null || !st.hasMoreElements()) {
+                try {
+                    st = new StringTokenizer(br.readLine());
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-                stack.push(new Pair(heights[i], i));
+            }
+            return st.nextToken();
+        }
+ 
+        long nextLong() {
+            return Long.parseLong(next());
+        }
+ 
+        int nextInt() {
+            return Integer.parseInt(next());
+        }
+    }
+ 
+    static long gcd(long a, long b) {
+        return b == 0 ? a : gcd(b, a % b);
+    }
+ 
+    static void dfs(int node, List<List<Long>> adj, long[] finish, long[] timer, int[] vis) {
+        vis[node] = 1;
+        for (long i : adj.get(node)) {
+            if (vis[(int) i] == 0) {
+                dfs((int) i, adj, finish, timer, vis);
             }
         }
-
-        Map<Integer, Integer> memo = new HashMap<>();
-        memo.put(null, 0);
-
-        int maxDepth = 0;
-        for (Integer key : up.keySet()) {
-            maxDepth = Math.max(maxDepth, depth(key, up, memo));
-        }
-
-        System.out.println(maxDepth);
+        finish[node] = timer[0]++;
     }
-
-    private static int depth(Integer i, Map<Integer, Integer> up, Map<Integer, Integer> memo) {
-        if (!memo.containsKey(i)) {
-            memo.put(i, depth(up.get(i), up, memo) + 1);
-        }
-        return memo.get(i);
-    }
-
-    static class Pair {
-        double height;
-        Integer index;
-
-        Pair(double height, Integer index) {
-            this.height = height;
-            this.index = index;
+ 
+    static void dfs2(int node, int[] vis, List<List<Long>> adj, long king, long[] kingdom) {
+        vis[node] = 1;
+        kingdom[node] = king;
+        for (long i : adj.get(node)) {
+            if (vis[(int) i] == 0) {
+                dfs2((int) i, vis, adj, king, kingdom);
+            }
         }
     }
-}
+ 
+    public static void main(String[] args) {
+        FastReader sc = new FastReader();
+        int n = sc.nextInt();
+        int m = sc.nextInt();
+ 
+        List<List<Long>> adj = new ArrayList<>(n + 1);
+        List<List<Long>> adjt = new ArrayList<>(n + 1);
+        for (int i = 0; i <= n; i++) {
+            adj.add(new ArrayList<>());
+            adjt.add(new ArrayList<>());
+        }
+ 
+        for (int i = 0; i < m; i++) {
+            int x = sc.nextInt();
+            int y = sc.nextInt();
+            adj.get(x).add((long) y);
+            adjt.get(y).add((long) x);
+        }
+ 
+        long[] finish = new long[n + 1];
+        Arrays.fill(finish, -1);
+        int[] vis = new int[n + 1];
+        long[] timer = new long[1];
+ 
+        for (int i = 1; i <= n; i++) {
+            if (vis[i] == 0) {
+                dfs(i, adj, finish, timer, vis);
+            }
+        }
+ 
+        Integer[] ord = new Integer[n];
+        for (int i = 0; i < n; i++) {
+            ord[i] = i + 1;
+        }
+ 
+        Arrays.sort(ord, (a, b) -> Long.compare(finish[b], finish[a]));
+ 
+        Arrays.fill(vis, 0);
+        long c = 0;
+        long[] kingdom = new long[n + 1];
+ 
+        for (int i = 0; i < n; i++) {
+            if (vis[ord[i]] == 0) {
+                c++;
+                dfs2(ord[i], vis, adjt, c, kingdom);
+            }
+        }
+ 
+        System.out.println(c);
+        StringBuilder sb = new StringBuilder();
+        for (int i = 1; i <= n; i++) {
+            sb.append(kingdom[i]).append(" ");
+        }
+        System.out.println(sb.toString().trim());
+    }
+
 
 A kód részletes magyarázata
         
-1. Beolvasás és adatok előkészítése
-        
-<b>public class MountainGliding { ... }</b>: Ez az osztály tartalmazza a teljes programkódot. A neve, "MountainGliding", a feladatra utal.
-<b>public static void main(String[] args) { ... }</b>: A program belépési pontja, a kód futása itt kezdődik.
-<b>Scanner scanner = new Scanner(System.in);</b>: Létrehoz egy Scanner objektumot, amivel beolvashatjuk a felhasználói bemenetet a konzolról.
-<b>scanner.nextLine();</b>: Ez a sor beolvas egy teljes sort, de nem tárolja el. Gyakran használják, ha a bemenetben van egy üres sor, vagy a feladatleírás része.
-<b>String[] heightsInput = scanner.nextLine().split(" ");</b>: A következő sort beolvassa, és a szóközök mentén feldarabolja, így egy szöveges tömböt kapunk (pl. ["150", "160", "145"]).
-<b>int[] heights = new int[heightsInput.length];</b>: Létrehoz egy új, egész számokat tartalmazó tömböt
-<b>for (int i = 0; i < heightsInput.length; i++) { ... }</b>: Ez a ciklus végigmegy a heightsInput tömb minden elemén.
-<b>heights[i] = Integer.parseInt(heightsInput[i]);</b>: A Integer.parseInt() metódussal átalakítja a szöveges számokat valós int számokká, majd beilleszti a heights tömbbe.
+Ez a Java kód egy klasszikus gráfalgoritmust valósít meg, a Kosaraju algoritmust vagy a Tarjan algoritmust a Csúcserősen Összefüggő Komponensek (Strongly Connected Components, SCC) megtalálására irányított gráfokban.
 
-2. "Szülő" hegyek megkeresése
+            1. Importok és Osztálydefiníciók
+            
+<b>import java.util.*;</b>	Importálja a Java segédprogramok gyűjteményét (pl. List, ArrayList, Arrays).
+<b>import java.io.*;</b>	Importálja a bemeneti/kimeneti műveletekhez szükséges osztályokat (pl. BufferedReader, IOException).
 
-<b>Map<Integer, Integer> up = new HashMap<>();</b>: Létrehoz egy térképet (Map), ami a hegyek "szülő-gyerek" kapcsolatát tárolja.
-<b>Stack<Pair> stack = new Stack<>();</b>: Létrehoz egy vermet (Stack), ami a hegyek magasság-index párosait tárolja. A verem úgy működik, mint egy tálca a menzán: amit utoljára raktál rá, azt veszed le először.
-<b>stack.push(new Pair(Double.MAX_VALUE, null));</b>: A verembe betesz egy speciális, virtuális "hegyet" a lehető legnagyobb magassággal, ami biztosítja, hogy a verem soha ne legyen üres.
-<b>for (int i = 0; i < heights.length; i++) { ... }</b>: Egy ciklus, ami végigmegy az összes bemeneti hegyen.
-<b>Integer kid = null;</b>: Segédváltozó, ami azokat a hegyeket tárolja, amiket a veremből kiveszünk.
-<b>while (heights[i] > stack.peek().height) { ... }</b>: Ez a belső ciklus addig fut, amíg a jelenlegi hegy magasabb, mint a verem tetején lévő. Ekkor kiveszi az alacsonyabb hegyet a veremből, és elmenti az indexét a 
-kid változóba.
-<b>if (heights[i] < stack.peek().height) { ... }</b>: Ha a mostani hegy alacsonyabb, mint a verem tetején lévő, akkor az utóbbi lesz a szülője.
-<b>up.put(i, stack.peek().index);</b>: Hozzáadja a up térképhez, hogy a jelenlegi hegy (i) "szülője" a verem tetején lévő hegy.
-<b>if (kid != null) { up.put(kid, i); }</b>: Ha a while ciklusban kivettünk hegyeket, az utoljára kivett hegy (kid) "szülője" a mostani hegy (i) lesz.
-<b>stack.push(new Pair(heights[i], i));</b>: A jelenlegi hegyet beteszi a verembe.
+            2. FastReader Segédosztály (Gyors Bemenetkezelés)
 
-3. A leghosszabb út kiszámítása
+<b>public class KingdomCses {</b>	A fő osztály definiálása KingdomCses néven.
+Ez az osztály a standard bemenet (konzol) gyorsabb beolvasására szolgál nagy adathalmazok esetén.
+<b>static class FastReader {</b>	Egy statikus belső osztály a gyors beolvasáshoz.
+<b>BufferedReader br;	BufferedReader</b>: Gyors, pufferezett olvasás a bemenetről.
+<b>StringTokenizer st;	StringTokenizer</b>: Sorok szavakra (tokenekre) bontására szolgál.
+<b>public FastReader() {</b>	Konstruktor.
+<b>br = new BufferedReader(new InputStreamReader(System.in));</b>	Létrehozza a BufferedReader objektumot, amely a standard bemenetről olvas.
+<b>String next() {</b>	A következő token (szó) beolvasására szolgáló metódus.
+<b>while (st == null</b>	
+<b>try { st = new StringTokenizer(br.readLine()); }</b>	Megpróbál beolvasni egy sort és tokenekre bontani.
+<b>catch (IOException e) { e.printStackTrace(); }</b>	Kezeli a beolvasási hibát.
+<b>return st.nextToken();</b>	Visszaadja a következő tokent.
+<b>long nextLong() { return Long.parseLong(next()); }</b>	Beolvas egy long típusú számot.
+<b>int nextInt() { return Integer.parseInt(next()); }</b>	Beolvas egy int típusú számot.
+            
+            3. Segédfüggvények
+            
+<b>static long gcd(long a, long b) {</b>	Euklideszi algoritmus a legnagyobb közös osztó (GCD) rekurzív kiszámítására. (Bár a fő feladathoz nem használt.)
+<b>return b == 0 ? a : gcd(b, a % b);</b>	Rekurzív hívás.
+<b>static void dfs(int node, List<List<Long>> adj, long[] finish, long[] timer, int[] vis) {</b>	Első Mélységi Keresés (DFS1): A bejárási befejezési idők kiszámítása.
+<b>vis[node] = 1;</b>	Megjelöli a csúcsot látogatottként.
+<b>for (long i : adj.get(node)) {</b>	Végigmegy a csúcs szomszédjain (kimenő éleken).
+<b>if (vis[(int) i] == 0) {</b>	Ha a szomszéd még nem látogatott.
+<b>dfs((int) i, adj, finish, timer, vis);</b>	Rekurzívan hívja a DFS-t a szomszédra.
+<b>finish[node] = timer[0]++;</b>	Beállítja a csúcs befejezési idejét (finish[node]), és növeli az időzítőt (timer[0]).
+<b>static void dfs2(int node, int[] vis, List<List<Long>> adj, long king, long[] kingdom) {</b>	Második Mélységi Keresés (DFS2): A Csúcserősen Összefüggő Komponensek (SCC) meghatározása.
+<b>vis[node] = 1;</b>	Megjelöli a csúcsot látogatottként.
+<b>kingdom[node] = king;</b>	Hozzárendeli az aktuális komponens (királyság, king) azonosítóját a csúcshoz.
+<b>for (long i : adj.get(node)) {</b>	Végigmegy a csúcs szomszédjain a fordított gráfban (bejövő élek).
+<b>if (vis[(int) i] == 0) {</b>	Ha a szomszéd még nem látogatott.
+<b>dfs2((int) i, vis, adj, king, kingdom);</b>	Rekurzívan hívja a DFS2-t a szomszédra.
 
-<b>Map<Integer, Integer> memo = new HashMap<>();</b>: Ez egy másik térkép, ami a memoizációhoz (dinamikus programozás) szolgál. Ide menti a már kiszámolt útvonalak hosszát.
-<b>memo.put(null, 0);</b>: A "gyökérelem" (a null indexű, virtuális hegy) mélységét 0-nak állítja be.
-<b>int maxDepth = 0;</b>: Ez a változó tárolja a valaha talált leghosszabb út hosszát.
-<b>for (Integer key : up.keySet()) { ... }</b>: Ez a ciklus végigmegy minden "gyerek" hegyen, ami a up térképben szerepel.
-<b>maxDepth = Math.max(maxDepth, depth(key, up, memo));</b>: Meghívja a depth metódust minden hegyre, hogy kiszámolja az onnan induló út hosszát, és a maxDepth változóban a legnagyobb értéket tartja meg.
-<b>System.out.println(maxDepth);</b>: Kiírja a végső eredményt a konzolra.
+            4. A Fő Program (main metódus)
+    
+<b>FastReader sc = new FastReader();</b>	Létrehozza a gyors beolvasó objektumot.
+<b>int n = sc.nextInt();</b>	Beolvassa a csúcsok számát (N).
+<b>int m = sc.nextInt();</b>	Beolvassa az élek számát (M).
+<b>List<List<Long>> adj = new ArrayList<>(n + 1); ... for (int i = 0; i <= n; i++) { adj.add(new ArrayList<>()); adjt.add(new ArrayList<>()); }</b>	Inicializálja a két szomszédsági listát: adj (eredeti gráf) és adjt (transzponált/fordított gráf) N+1 méretben.
+<b>for (int i = 0; i < m; i++) { int x = sc.nextInt(); int y = sc.nextInt(); adj.get(x).add((long) y); adjt.get(y).add((long) x); }</b>	Beolvassa az éleket (x -> y). Hozzáadja x -> y élt az eredeti gráfhoz (adj), és y -> x élt a fordított gráfhoz (adjt).
+<b>long[] finish = new long[n + 1]; Arrays.fill(finish, -1); int[] vis = new int[n + 1]; long[] timer = new long[1];</b>	Inicializálja az első DFS-hez szükséges tömböket: finish (befejezési idők), vis (látogatott jelző) és timer (időmérő, egyelemű tömb a pass-by-reference szimulálásához).
+<b>for (int i = 1; i <= n; i++) { if (vis[i] == 0) { dfs(i, adj, finish, timer, vis); } }</b>	FUTTATJA AZ ELSŐ DFS-t (DFS1): Végigmegy az összes csúcson, és elindítja a dfs függvényt az eredeti gráfon (adj) a befejezési idők (finish time) kiszámításához.
+<b>Integer[] ord = new Integer[n]; for (int i = 0; i < n; i++) { ord[i] = i + 1; }</b>	Létrehoz egy segédtömböt (ord) a csúcsok 1-től N-ig tartó sorszámainak tárolására.
+<b>Arrays.sort(ord, (a, b) -> Long.compare(finish[b], finish[a]));</b>	Rendezi a csúcsokat a befejezési idők csökkenő sorrendje alapján. Ez a Kosaraju algoritmus kulcsfontosságú lépése.
+<b>Arrays.fill(vis, 0); long c = 0; long[] kingdom = new long[n + 1];</b>	Újrainicializálja a vis tömböt, beállítja a komponensszámlálót (c) 0-ra, és inicializálja a kingdom tömböt (a csúcsokhoz rendelt SCC azonosító).
+<b>for (int i = 0; i < n; i++) { if (vis[ord[i]] == 0) { c++; dfs2(ord[i], vis, adjt, c, kingdom); } }	FUTTATJA A MÁSODIK DFS-t (DFS2):</b> Végigmegy a csúcsokon a rendezett sorrend (ord) alapján. Minden nem látogatott csúcsnál növeli a komponensszámlálót (c), és elindítja a dfs2 függvényt a fordított gráfon (adjt), megtalálva ezzel egy új SCC-t (királyságot).
+<b>System.out.println(c);</b>	Kiírja az SCC-k (királyságok) teljes számát.
+<b>StringBuilder sb = new StringBuilder(); for (int i = 1; i <= n; i++) { sb.append(kingdom[i]).append(" "); }</b>	Felépít egy stringet a csúcsokhoz rendelt SCC azonosítókkal.
+<b>System.out.println(sb.toString().trim());</b>	Kiírja a csúcsok SCC-azonosítóit.
 
-4. Segéd metódusok és osztályok
-
-<b>private static int depth(...) { ... }</b>: Ez egy rekurzív függvény.
-<b>if (!memo.containsKey(i)) { ... }</b>: Ha az adott hegy mélységét még nem számolta ki...
-<b>memo.put(i, depth(up.get(i), up, memo) + 1);</b>: ...akkor rekurzívan meghívja magát a szülőre, és az eredményhez hozzáad egyet, majd elmenti a memo térképbe.
-<b>return memo.get(i);</b>: Visszaadja a tárolt mélységértéket.
-<b>static class Pair { ... }</b>: Ez egy egyszerű belső osztály, ami két adatot tárol: egy hegy magasságát (height) és a pozícióját (index).
             </pre>
         </div>
     </div>
