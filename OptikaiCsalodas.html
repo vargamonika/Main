@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mountain Range</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50; /* Sötétkék/szürke */
+            --secondary-color: #3498db; /* Élénk kék */
+            --background-color: #ecf0f1; /* Világosszürke */
+            --text-color: #2c3e50;
+            --code-bg-color: #bdc3c7; /* Középszürke kód háttér */
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        header {
+            text-align: center;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--primary-color);
+            margin-bottom: 20px;
+        }
+        header h1 {
+            color: var(--primary-color);
+            font-size: 2.5em;
+            margin: 0;
+        }
+        header p {
+            font-style: italic;
+            color: #7f8c8d;
+        }
+        .section {
+            margin-bottom: 30px;
+        }
+        .section h2 {
+            color: var(--secondary-color);
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 5px;
+            margin-bottom: 15px;
+        }
+        .section p {
+            margin-bottom: 10px;
+        }
+        .image-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .image-container img {
+            max-width: 40%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .code-container {
+            background-color: var(--code-bg-color);
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        ul li::before {
+            content: "• ";
+            color: var(--secondary-color);
+        }
+        strong {
+            color: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Optikai Csalódás</h1>
+        <p>Példa input: 10 20 15 17 35 25 40 12 19 13 12</p>
+    </header>
+
+    <div class="image-container">
+        <img src="Négyzetek.png" alt="Négyzetek">
+    </div>
+
+    <div class="section">
+        <p>4. feladat: Rács – optikai csalódás</p>
+<p>Készítsd el a minta szerinti ábrát (négyzetek :db :hossz)! A belső négyzet oldala (:hossz*2) egység hosszú, a sávok :hossz vastagságúak. Az egyes sávokat kifelé haladva egyre világosabb pirosra színezd! 
+Egy :red piros árnyalatú töltőszínt az alábbi utasítással választhatsz: töltőszín! (lista :red 0 0).
+</p>
+    </div>
+
+    <div class="section">
+        <h2>A feladat megoldása</h2>
+       <div class="image-container">
+        <img src="Négyzetek rekurzió.png" alt="Négyzetek rekurzió">
+    </div>
+        <p>A feladat megoldásához egy négyzet alakzatot hozunk létre szereplőként, amely piros színű (szín: 0, telítettség:100, fényerő: 100) és fekete körvonala van (vastagság: 2 pt). Szükséges egy alap blokk, ami elindítja a programot (bal oldal), majd meghívja a rekurzív saját blokkot (jobb oldal). A saját blokk úgy válik rekurzívvá, hogy a blokk végén újra meghívja önmagát, így a kilépési pontig ismétlődik. A rekurzív lépés annyiszor ismétlődik, ahányszor a bevezető blokkban megadjuk a ’négyzetek’ nevű függvény darabszámát (db).
+A kilépési pont ebben az esetben az utasítás, hogy addig ismételje, amíg a beállított darabszám (db) 1-nél kisebbé nem válik. Ezt helyezzük a blokk elejére, így a program leáll, amint eléri a számláló a nullát. Ennél az értéknél már nem fog lefutni a rekurzív blokk. A rekurzív részben a négyzetek másolása történik olyan módon, hogy egyre kisebbé válnak és a színük egyre sötétebb lesz. Mivel mind a két tulajdonság százalékos értékként van megadva, ezért a változás mértéke egyenlő a 100% darabszámmal osztott értékével. Beállítható, hogy hány négyzet rajzolása történjen meg és a kicsinyítés, valamint a szín (fényerő) változása is ehhez az értékhez fog kapcsolódni.
+</p>
+    </div>
+
+    <div class="section">
+        <h2>2. A "szülő" hegyek megkeresése</h2>
+        
+        <p>A program sorra veszi a hegyeket, és verem (stack) segítségével épít szülő–gyerek kapcsolatokat közöttük. Itt a szülő mindig egy magasabb hegy (vagy a sentinel), nem pedig egy alacsonyabb.</p>
+        <p>Képzeld el, hogy a hegyeket egymás után rakod egy verembe (stack). A verem tetején mindig az a legutóbb látott, még „aktív” magasabb hegy áll, amihez viszonyítjuk a következő bejövő hegyet.</p>
+        <p>A verem úgy működik, hogy amit utoljára raktál bele, azt veszed ki először (LIFO).<p>
+        <p>A program végigmegy a hegyek listáján és minden lépésben a következőt csinálja:</p>
+        <ul>
+            <li>Amíg a mostani hegy magasabb, mint a verem tetején lévő hegy, kivesszük (pop) a veremből a tetejét. (Ezzel eltávolítjuk azokat a nála kisebb hegyeket, amelyekre most már „rátettünk” egy magasabbat.)
+            <li>Ha a mostani hegy alacsonyabb, mint a verem tetején lévő, akkor a verem tetején lévő (korábban látott) magasabb hegy lesz a mostani hegy szülője — ezt a kapcsolatot elmenti.
+            <li>Ha a fenti pop művelet során voltak kivett, kisebb hegyek, akkor a legutoljára kivett ilyen hegy szülőjét a mostani hegyre állítja (mivel most a mostani hegy az, amelyik fölé érkezett).
+            <li>Végül a mostani hegyet berakja (push) a verembe.
+        </ul>
+        <p>Ezzel a szabállyal egy irányított szerkezet (fa) jön létre: minden csomópont mutat egy magasabb csomópontra (szülőre), vagy a sentinelre (null). A program ezután memoizált rekurzióval kiszámolja minden csúcstól a szülői láncon lefelé elérhető hosszt, és ezek közül választja a legnagyobbat — ez adja a leghosszabb ereszkedő út hosszát.</p>
+    </div>
+
+    <div class="section">
+        <h2>3. A leghosszabb út kiszámítása</h2>
+        <p>Most, hogy megvan a családfa, már csak meg kell mérni a leghosszabb "ágat". Ezt egy különleges funkcióval csinálja a program, ami a **depth** nevet kapta. Ez a funkció megmondja, hogy egy adott hegy milyen mélyen van a családfában.</p>
+        <ul>
+            <li>A funkció megnézi egy hegy szülőjét, majd megkérdezi tőle, hogy ő milyen mélyen van. Ehhez hozzáad egyet, és máris megkapja a saját mélységét.</li>
+            <li>Hogy ne kelljen újra és újra kiszámolnia ugyanazt, a program **megjegyzi** (ezt hívják **memoizációnak**) az eredményeket egy "emlékeztető" táblázatba.</li>
+        </ul>
+        <p>Végül a program végigmegy az összes hegyen, kiszámolja a "mélységüket", és kiírja a legnagyobb számot. Ez a szám lesz a leghosszabb ereszkedő ösvény hossza.</p>
+    </div>
+
+    <div class="section">
+        <h2>Java kód</h2>
+        <div class="code-container">
+            <pre>
+public class MountainGliding {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        // Set recursion limit is not directly applicable in Java, but we can manage stack depth.
+
+        scanner.nextLine();
+        String[] heightsInput = scanner.nextLine().split(" ");
+
+        int[] heights = new int[heightsInput.length];
+
+        for (int i = 0; i < heightsInput.length; i++) {
+            heights[i] = Integer.parseInt(heightsInput[i]);
+        }
+
+        Map<Integer, Integer> up = new HashMap<>();
+        Stack<Pair> stack = new Stack<>();
+        stack.push(new Pair(Double.MAX_VALUE, null));
+
+        for (int i = 0; i < heights.length; i++) {
+            Integer kid = null;
+            while (heights[i] > stack.peek().height) {
+                kid = stack.pop().index;
+            }
+            if (heights[i] < stack.peek().height) {
+                up.put(i, stack.peek().index);
+                if (kid != null) {
+                    up.put(kid, i);
+                }
+                stack.push(new Pair(heights[i], i));
+            }
+        }
+
+        Map<Integer, Integer> memo = new HashMap<>();
+        memo.put(null, 0);
+
+        int maxDepth = 0;
+        for (Integer key : up.keySet()) {
+            maxDepth = Math.max(maxDepth, depth(key, up, memo));
+        }
+
+        System.out.println(maxDepth);
+    }
+
+    private static int depth(Integer i, Map<Integer, Integer> up, Map<Integer, Integer> memo) {
+        if (!memo.containsKey(i)) {
+            memo.put(i, depth(up.get(i), up, memo) + 1);
+        }
+        return memo.get(i);
+    }
+
+    static class Pair {
+        double height;
+        Integer index;
+
+        Pair(double height, Integer index) {
+            this.height = height;
+            this.index = index;
+        }
+    }
+}
+
+A kód részletes magyarázata
+        
+1. Beolvasás és adatok előkészítése
+        
+<b>public class MountainGliding { ... }</b>: Ez az osztály tartalmazza a teljes programkódot. A neve, "MountainGliding", a feladatra utal.
+<b>public static void main(String[] args) { ... }</b>: A program belépési pontja, a kód futása itt kezdődik.
+<b>Scanner scanner = new Scanner(System.in);</b>: Létrehoz egy Scanner objektumot, amivel beolvashatjuk a felhasználói bemenetet a konzolról.
+<b>scanner.nextLine();</b>: Ez a sor beolvas egy teljes sort, de nem tárolja el. Gyakran használják, ha a bemenetben van egy üres sor, vagy a feladatleírás része.
+<b>String[] heightsInput = scanner.nextLine().split(" ");</b>: A következő sort beolvassa, és a szóközök mentén feldarabolja, így egy szöveges tömböt kapunk (pl. ["150", "160", "145"]).
+<b>int[] heights = new int[heightsInput.length];</b>: Létrehoz egy új, egész számokat tartalmazó tömböt
+<b>for (int i = 0; i < heightsInput.length; i++) { ... }</b>: Ez a ciklus végigmegy a heightsInput tömb minden elemén.
+<b>heights[i] = Integer.parseInt(heightsInput[i]);</b>: A Integer.parseInt() metódussal átalakítja a szöveges számokat valós int számokká, majd beilleszti a heights tömbbe.
+
+2. "Szülő" hegyek megkeresése
+
+<b>Map<Integer, Integer> up = new HashMap<>();</b>: Létrehoz egy térképet (Map), ami a hegyek "szülő-gyerek" kapcsolatát tárolja.
+<b>Stack<Pair> stack = new Stack<>();</b>: Létrehoz egy vermet (Stack), ami a hegyek magasság-index párosait tárolja. A verem úgy működik, mint egy tálca a menzán: amit utoljára raktál rá, azt veszed le először.
+<b>stack.push(new Pair(Double.MAX_VALUE, null));</b>: A verembe betesz egy speciális, virtuális "hegyet" a lehető legnagyobb magassággal, ami biztosítja, hogy a verem soha ne legyen üres.
+<b>for (int i = 0; i < heights.length; i++) { ... }</b>: Egy ciklus, ami végigmegy az összes bemeneti hegyen.
+<b>Integer kid = null;</b>: Segédváltozó, ami azokat a hegyeket tárolja, amiket a veremből kiveszünk.
+<b>while (heights[i] > stack.peek().height) { ... }</b>: Ez a belső ciklus addig fut, amíg a jelenlegi hegy magasabb, mint a verem tetején lévő. Ekkor kiveszi az alacsonyabb hegyet a veremből, és elmenti az indexét a 
+kid változóba.
+<b>if (heights[i] < stack.peek().height) { ... }</b>: Ha a mostani hegy alacsonyabb, mint a verem tetején lévő, akkor az utóbbi lesz a szülője.
+<b>up.put(i, stack.peek().index);</b>: Hozzáadja a up térképhez, hogy a jelenlegi hegy (i) "szülője" a verem tetején lévő hegy.
+<b>if (kid != null) { up.put(kid, i); }</b>: Ha a while ciklusban kivettünk hegyeket, az utoljára kivett hegy (kid) "szülője" a mostani hegy (i) lesz.
+<b>stack.push(new Pair(heights[i], i));</b>: A jelenlegi hegyet beteszi a verembe.
+
+3. A leghosszabb út kiszámítása
+
+<b>Map<Integer, Integer> memo = new HashMap<>();</b>: Ez egy másik térkép, ami a memoizációhoz (dinamikus programozás) szolgál. Ide menti a már kiszámolt útvonalak hosszát.
+<b>memo.put(null, 0);</b>: A "gyökérelem" (a null indexű, virtuális hegy) mélységét 0-nak állítja be.
+<b>int maxDepth = 0;</b>: Ez a változó tárolja a valaha talált leghosszabb út hosszát.
+<b>for (Integer key : up.keySet()) { ... }</b>: Ez a ciklus végigmegy minden "gyerek" hegyen, ami a up térképben szerepel.
+<b>maxDepth = Math.max(maxDepth, depth(key, up, memo));</b>: Meghívja a depth metódust minden hegyre, hogy kiszámolja az onnan induló út hosszát, és a maxDepth változóban a legnagyobb értéket tartja meg.
+<b>System.out.println(maxDepth);</b>: Kiírja a végső eredményt a konzolra.
+
+4. Segéd metódusok és osztályok
+
+<b>private static int depth(...) { ... }</b>: Ez egy rekurzív függvény.
+<b>if (!memo.containsKey(i)) { ... }</b>: Ha az adott hegy mélységét még nem számolta ki...
+<b>memo.put(i, depth(up.get(i), up, memo) + 1);</b>: ...akkor rekurzívan meghívja magát a szülőre, és az eredményhez hozzáad egyet, majd elmenti a memo térképbe.
+<b>return memo.get(i);</b>: Visszaadja a tárolt mélységértéket.
+<b>static class Pair { ... }</b>: Ez egy egyszerű belső osztály, ami két adatot tárol: egy hegy magasságát (height) és a pozícióját (index).
+            </pre>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
