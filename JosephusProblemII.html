@@ -102,7 +102,7 @@
     <div class="section">
 
 
-<p>A Josephus Problem II egy matematikai és algoritmikus feladvány, amely egy körben álló emberek eliminációját modellezi.</p>
+<p>A Josephus Problem II egy matematikai és algoritmikus feladvány, amely körben álló emberek eliminációját modellezi.</p>
 <p>A feladat szövege szerint:</p>
         <ul>
             <li>n gyerek van egy körben, 1-től n-ig számozva.</li>
@@ -114,18 +114,18 @@
     <div class="section">
         <h2>1.  program működésének magyarázata</h2>
 
-<p>1.	Fenwick-fa (Binary Indexed Tree): A FenwickTree osztály felelős a gyerekek hatékony nyilvántartásáért. Kezdetben minden gyerek egy-egy 1-es értéket kap a fában, ami azt jelenti, hogy "él". Ha egy gyereket eltávolítunk, az értékét 0-ra állítjuk. A fa lehetővé teszi, hogy O(log n) idő alatt kiszámítsuk, hány élő gyerek van egy adott pozícióig.</p>
-<p>2.	findKth(k) metódus: Ez a legfontosabb rész. Bináris keresést használ a Fenwick-fán, hogy O(log n * log n) idő alatt megtalálja a k-adik élő gyereket. A keresés abból áll, hogy egy "gyorsítótár" segítségével megkeressük azt a pozíciót, ahol a gyerekszám megegyezik a keresett sorszámmal.</p>
+<p>1.	Fenwick-fa (Binary Indexed Tree): A FenwickTree osztály felelős a gyerekek hatékony nyilvántartásáért. Kezdetben minden gyerek egy-egy 1-es értéket kap a fában, ami azt jelenti, hogy "játékban van". Ha egy gyereket eltávolítunk, az értékét 0-ra állítjuk. A fa lehetővé teszi, hogy O(log n) idő alatt kiszámítsuk, hány játékban levő gyerek van egy adott pozícióig.</p>
+<p>2.	findKth(k) metódus: Ez a legfontosabb rész. Bináris keresést használ a Fenwick-fán, hogy O(log n * log n) idő alatt megtalálja a k-adik játékban levő gyereket. A keresés abból áll, hogy egy "gyorsítótár" segítségével megkeressük azt a pozíciót, ahol a gyerekszám megegyezik a keresett sorszámmal.</p>
 <p>3.	Fő logika a main metódusban:</p>
         <ul>
             <li>Inicializálja a Fenwick-fát, és feltölti n darab 1-es értékkel.</li>
             <li>Egy for ciklus n-től 1-ig fut, minden lépésben egy gyereket eltávolítva.</li>
-            <li>currentIndex = (currentIndex + k) % i;: Ez a moduláris aritmetika kiszámítja, hogy hányadik gyereket kell eltávolítani a jelenlegi körben lévő élő gyerekek között. Az i értéke a körben lévő gyerekek számát jelenti.</li>
+            <li>currentIndex = (currentIndex + k) % i;: Ez kiszámítja, hogy hányadik gyereket kell eltávolítani a jelenlegi körben lévő gyerekek között. Az i értéke a körben lévő gyerekek számát jelenti.</li>
             <li>int removedIndex = ft.findKth(currentIndex + 1);: A findKth metódus megtalálja a tényleges indexét a gyerektömbben.</li>
             <li>ft.add(removedIndex, -1);: Eltávolítja a gyereket a Fenwick-fáról, csökkentve az értékét 1-gyel.</li>
             <li>out.print(removedIndex + 1 + " ");: Kiírja a gyerek sorszámát.</li>
         </ul>
-<p>Ez a megoldás a O(n * log^2 n) komplexitású, ami bőven a megadott időkorláton belül van.</p>
+<p>Ez a megoldás a O(n * log^2 n) komplexitású, ami a megadott időkorláton belül van.</p>
     </div>
 
         <h2>3. A példa futtatása (n=7, k=2)</h2>
@@ -275,7 +275,7 @@ public class JosephusProblemII {
 
 FenwickTree osztály
             
-Ez az osztály a Fenwick-fa adatszerkezetet valósítja meg, amely hatékonyan tudja kezelni a gyerekek "élő" és "eltávolított" állapotát. A fa a prefix összegek tárolására specializálódott.
+Ez az osztály a Fenwick-fa adatszerkezetet valósítja meg, amely hatékonyan tudja kezelni a gyerekek "játékban levő" és "eltávolított" állapotát. A fa a prefix összegek tárolására specializálódott.
 <b>private int[] tree;</b>: Ez a tömb a Fenwick-fa belső reprezentációja.
 <b>private int size;</b>: A gyerekek teljes számát tárolja.
 <b>public FenwickTree(int size):</b> Ez a konstruktor inicializálja a fát a megadott mérettel.
@@ -290,7 +290,7 @@ Ez az osztály a Fenwick-fa adatszerkezetet valósítja meg, amely hatékonyan t
 <b>while (index > 0) { ... }</b>: Visszafelé haladva a fa gyökere felé számolja az elemek összegét.
 <b>sum += tree[index];</b>: Hozzáadja az aktuális faelem értékét az összeghez.
 <b>index -= index & (-index);</b>: Ismét a bitművelet, de most az ellentétes irányba navigál, hogy az összes szükséges elemet összegezze.
-<b>public int findKth(int k)</b>: Ez a metódus bináris keresést használ a Fenwick-fán, hogy megtalálja a k-adik "élő" gyereket.
+<b>public int findKth(int k)</b>: Ez a metódus bináris keresést használ a Fenwick-fán, hogy megtalálja a k-adik "játékban levő" gyereket.
 <b>while (low <= high)</b>: A standard bináris keresési ciklus.
 <b>if (query(mid) >= k)</b>: Ellenőrzi, hogy a mid indexig lévő gyerekek száma eléri-e a k-t. Ha igen, a result-ba menti az indexet, és a keresési tartományt balra szűkíti, hátha van korábbi érvényes index.
 <b>else</b>: Ha nem, a keresési tartományt jobbra tolja.
@@ -301,10 +301,10 @@ Ez a program fő belépési pontja, ami a Josephus-probléma logikáját valós�
 <b>InputReader in = new InputReader(inputStream);</b>: Egy gyors beolvasó osztályt inicializál.
 <b>int n = in.nextInt(); int k = in.nextInt();</b>: Beolvassa a gyerekek számát (n) és a lépésközt (k).
 <b>FenwickTree ft = new FenwickTree(n);</b>: Létrehoz egy Fenwick-fát n gyerek számára.
-<b>for (int i = 0; i < n; i++) { ft.add(i, 1); }</b>: Kezdetben minden gyerek "él", így a fát feltölti 1-esekkel.
+<b>for (int i = 0; i < n; i++) { ft.add(i, 1); }</b>: Kezdetben minden gyerek "játékban van", így a fát feltölti 1-esekkel.
 <b>int currentIndex = 0;</b>: Ez a változó a kör aktuális pozícióját tárolja.
 <b>for (int i = n; i > 0; i--) { ... }</b>: A fő ciklus, ami minden lépésben egy gyereket eliminál. Az i változó a körben lévő, még élő gyerekek számát mutatja.
-<b>currentIndex = (currentIndex + k) % i;</b>: Ez a moduláris aritmetika kiszámítja az eltávolítandó gyerek relatív pozícióját a jelenlegi körben.
+<b>currentIndex = (currentIndex + k) % i;</b>: Ez kiszámítja az eltávolítandó gyerek relatív pozícióját a jelenlegi körben.
 <b>int removedIndex = ft.findKth(currentIndex + 1);</b>: A findKth metódus megkeresi a gyerek tényleges (0-tól indexelt) pozícióját a teljes n gyerekből álló sorozatban.
 <b>ft.add(removedIndex, -1);</b>: A FenwickTree add metódusával jelzi, hogy a gyerek már nincs a körben.
 <b>out.print(removedIndex + 1 + " ");</b>: Kiírja az eltávolított gyerek sorszámát (mivel a feladat 1-től számoz, a 0-tól indexelt eredményhez 1-et ad).
