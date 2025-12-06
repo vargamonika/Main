@@ -255,72 +255,9 @@ public class KingdomCses {
             sb.append(kingdom[i]).append(" ");
         }
         System.out.println(sb.toString().trim());
-    }
+    }      
 
-
-A kód részletes magyarázata
-        
-Ez a Java kód egy klasszikus gráfalgoritmust valósít meg, a Kosaraju algoritmust vagy a Tarjan algoritmust a Csúcserősen
-            Összefüggő Komponensek (Strongly Connected Components, SCC) megtalálására irányított gráfokban.
-
-            1. Importok és Osztálydefiníciók
-            
-<b>import java.util.*;</b>	Importálja a Java segédprogramok gyűjteményét (pl. List, ArrayList, Arrays).
-<b>import java.io.*;</b>	Importálja a bemeneti/kimeneti műveletekhez szükséges osztályokat (pl. BufferedReader, IOException).
-
-            2. FastReader Segédosztály (Gyors Bemenetkezelés)
-
-<b>public class KingdomCses {</b>	A fő osztály definiálása KingdomCses néven.
-Ez az osztály a standard bemenet (konzol) gyorsabb beolvasására szolgál nagy adathalmazok esetén.
-<b>static class FastReader {</b>	Egy statikus belső osztály a gyors beolvasáshoz.
-<b>BufferedReader br;	BufferedReader</b>: Gyors, pufferezett olvasás a bemenetről.
-<b>StringTokenizer st;	StringTokenizer</b>: Sorok szavakra (tokenekre) bontására szolgál.
-<b>public FastReader() {</b>	Konstruktor.
-<b>br = new BufferedReader(new InputStreamReader(System.in));</b>	Létrehozza a BufferedReader objektumot, amely a standard bemenetről olvas.
-<b>String next() {</b>	A következő token (szó) beolvasására szolgáló metódus.
-<b>while (st == null</b>	
-<b>try { st = new StringTokenizer(br.readLine()); }</b>	Megpróbál beolvasni egy sort és tokenekre bontani.
-<b>catch (IOException e) { e.printStackTrace(); }</b>	Kezeli a beolvasási hibát.
-<b>return st.nextToken();</b>	Visszaadja a következő tokent.
-<b>long nextLong() { return Long.parseLong(next()); }</b>	Beolvas egy long típusú számot.
-<b>int nextInt() { return Integer.parseInt(next()); }</b>	Beolvas egy int típusú számot.
-            
-            3. Segédfüggvények
-            
-<b>static long gcd(long a, long b) {</b>	Euklideszi algoritmus a legnagyobb közös osztó (GCD) rekurzív kiszámítására. (Bár a fő feladathoz nem használt.)
-<b>return b == 0 ? a : gcd(b, a % b);</b>	Rekurzív hívás.
-<b>static void dfs(int node, List<List<Long>> adj, long[] finish, long[] timer, int[] vis) {</b>	Első Mélységi Keresés (DFS1): A bejárási 
-            befejezési idők kiszámítása.
-<b>vis[node] = 1;</b>	Megjelöli a csúcsot látogatottként.
-<b>for (long i : adj.get(node)) {</b>	Végigmegy a csúcs szomszédjain (kimenő éleken).
-<b>if (vis[(int) i] == 0) {</b>	Ha a szomszéd még nem látogatott.
-<b>dfs((int) i, adj, finish, timer, vis);</b>	Rekurzívan hívja a DFS-t a szomszédra.
-<b>finish[node] = timer[0]++;</b>	Beállítja a csúcs befejezési idejét (finish[node]), és növeli az időzítőt (timer[0]).
-<b>static void dfs2(int node, int[] vis, List<List<Long>> adj, long king, long[] kingdom) {</b>	Második Mélységi Keresés (DFS2): A Csúcserősen
-            Összefüggő Komponensek (SCC) meghatározása.
-<b>vis[node] = 1;</b>	Megjelöli a csúcsot látogatottként.
-<b>kingdom[node] = king;</b>	Hozzárendeli az aktuális komponens (királyság, king) azonosítóját a csúcshoz.
-<b>for (long i : adj.get(node)) {</b>	Végigmegy a csúcs szomszédjain a fordított gráfban (bejövő élek).
-<b>if (vis[(int) i] == 0) {</b>	Ha a szomszéd még nem látogatott.
-<b>dfs2((int) i, vis, adj, king, kingdom);</b>	Rekurzívan hívja a DFS2-t a szomszédra.
-
-            4. A Fő Program (main metódus)
-    
-<b>FastReader sc = new FastReader();</b>	Létrehozza a gyors beolvasó objektumot.
-<b>int n = sc.nextInt();</b>	Beolvassa a csúcsok számát (N).
-<b>int m = sc.nextInt();</b>	Beolvassa az élek számát (M).
-<b>List<List<Long>> adj = new ArrayList<>(n + 1); ... for (int i = 0; i <= n; i++) { adj.add(new ArrayList<>()); adjt.add(new ArrayList<>()); }</b>	Inicializálja a két szomszédsági listát: adj (eredeti gráf) és adjt (transzponált/fordított gráf) N+1 méretben.
-<b>for (int i = 0; i < m; i++) { int x = sc.nextInt(); int y = sc.nextInt(); adj.get(x).add((long) y); adjt.get(y).add((long) x); }</b>	Beolvassa az éleket (x -> y). Hozzáadja x -> y élt az eredeti gráfhoz (adj), és y -> x élt a fordított gráfhoz (adjt).
-<b>long[] finish = new long[n + 1]; Arrays.fill(finish, -1); int[] vis = new int[n + 1]; long[] timer = new long[1];</b>	Inicializálja az első DFS-hez szükséges tömböket: finish (befejezési idők), vis (látogatott jelző) és timer (időmérő, egyelemű tömb a pass-by-reference szimulálásához).
-<b>for (int i = 1; i <= n; i++) { if (vis[i] == 0) { dfs(i, adj, finish, timer, vis); } }</b>	FUTTATJA AZ ELSŐ DFS-t (DFS1): Végigmegy az összes csúcson, és elindítja a dfs függvényt az eredeti gráfon (adj) a befejezési idők (finish time) kiszámításához.
-<b>Integer[] ord = new Integer[n]; for (int i = 0; i < n; i++) { ord[i] = i + 1; }</b>	Létrehoz egy segédtömböt (ord) a csúcsok 1-től N-ig tartó sorszámainak tárolására.
-<b>Arrays.sort(ord, (a, b) -> Long.compare(finish[b], finish[a]));</b>	Rendezi a csúcsokat a befejezési idők csökkenő sorrendje alapján. Ez a Kosaraju algoritmus kulcsfontosságú lépése.
-<b>Arrays.fill(vis, 0); long c = 0; long[] kingdom = new long[n + 1];</b>	Újrainicializálja a vis tömböt, beállítja a komponensszámlálót (c) 0-ra, és inicializálja a kingdom tömböt (a csúcsokhoz rendelt SCC azonosító).
-<b>for (int i = 0; i < n; i++) { if (vis[ord[i]] == 0) { c++; dfs2(ord[i], vis, adjt, c, kingdom); } }	FUTTATJA A MÁSODIK DFS-t (DFS2):</b> Végigmegy a csúcsokon a rendezett sorrend (ord) alapján. Minden nem látogatott csúcsnál növeli a komponensszámlálót (c), és elindítja a dfs2 függvényt a fordított gráfon (adjt), megtalálva ezzel egy új SCC-t (királyságot).
-<b>System.out.println(c);</b>	Kiírja az SCC-k (királyságok) teljes számát.
-<b>StringBuilder sb = new StringBuilder(); for (int i = 1; i <= n; i++) { sb.append(kingdom[i]).append(" "); }</b>	Felépít egy stringet a csúcsokhoz rendelt SCC azonosítókkal.
-<b>System.out.println(sb.toString().trim());</b>	Kiírja a csúcsok SCC-azonosítóit.
-
+    I. FastReader Osztály (1-35. sor)<p><code>public class KingdomCses {</code>: A fő osztály definíciója.</p><p><code>static class FastReader {</code>: Egy beágyazott segédosztály a gyors bemeneti adatok beolvasására.</p><p><code>BufferedReader br;</code>: Változó a nagy mennyiségű karakter gyors beolvasására.</p><p><code>StringTokenizer st;</code>: Változó a beolvasott sorok szavakra/számokra való darabolására.</p><p><code>public FastReader() {</code>: A konstruktor inicializálja a beolvasót a standard inputról.</p><p><code>br = new BufferedReader(new InputStreamReader(System.in));</code>: Beállítja a BufferedReader-t a gyorsabb inputkezelés érdekében.</p><p><code>String next() {</code>: Metódus a következő token (szó/szám) beolvasására.</p><p><code>while (st == null || !st.hasMoreElements()) {</code>: Ellenőrzi, hogy van-e még feldolgozatlan token az aktuális sorban.</p><p><code>try { st = new StringTokenizer(br.readLine()); }</code>: Ha nincs, megpróbál beolvasni egy új sort, és tokenekre bontja azt.</p><p><code>catch (IOException e) { e.printStackTrace(); }</code>: Kezeli az esetleges bemeneti-kimeneti hibákat.</p><p><code>return st.nextToken();</code>: Visszaadja a következő tokent.</p><p><code>long nextLong() { return Long.parseLong(next()); }</code>: Beolvas egy stringet, és long típusú számmá alakítja.</p><p><code>int nextInt() { return Integer.parseInt(next()); }</code>: Beolvas egy stringet, és int típusú számmá alakítja.</p><p><code>}</code>: A FastReader osztály záró tagje.</p>II. Segéd Metódusok (38-60. sor)<p><code>static long gcd(long a, long b) { return b == 0 ? a : gcd(b, a % b); }</code>: Euklideszi algoritmus a legnagyobb közös osztó (GCD) kiszámítására (bár a fő SCC feladathoz nem szükséges).</p><p><code>static void dfs(int node, List> adj, long[] finish, long[] timer, int[] vis) {</code>: Az első mélységi bejárás (DFS) a befejezési idők kiszámítására.</p><p><code>vis[node] = 1;</code>: Jelöli az aktuális csomópontot látogatottnak.</p><p><code>for (long i : adj.get(node)) {</code>: Végigmegy az aktuális csomópont összes szomszédján az eredeti gráfban.</p><p><code>if (vis[(int) i] == 0) { dfs((int) i, adj, finish, timer, vis); }</code>: Ha a szomszéd még nem volt látogatott, rekurzívan meghívja rá a DFS-t.</p><p><code>finish[node] = timer[0]++;</code>: Amikor a csomópont befejezi a bejárást, beállítja a befejezési idejét, és növeli az időzítőt.</p><p><code>static void dfs2(int node, int[] vis, List> adj, long king, long[] kingdom) {</code>: A második DFS a transzponált gráfban az erősen összefüggő komponensek (SCC) azonosítására.</p><p><code>vis[node] = 1;</code>: Jelöli az aktuális csomópontot látogatottnak.</p><p><code>kingdom[node] = king;</code>: Hozzárendeli az aktuális "királyság" (SCC) azonosítóját a csomóponthoz.</p><p><code>for (long i : adj.get(node)) {</code>: Végigmegy az összes szomszédon a transzponált (fordított élekkel rendelkező) gráfban.</p><p><code>if (vis[(int) i] == 0) { dfs2((int) i, vis, adj, king, kingdom); }</code>: Ha a szomszéd még nem volt látogatott, rekurzívan meghívja rá a DFS-t, hozzárendelve ugyanazt a királyságot.</p>III. Fő Program (62-113. sor)<p><code>public static void main(String[] args) {</code>: A program belépési pontja.</p><p><code>FastReader sc = new FastReader();</code>: Létrehozza a gyors beolvasó objektumot.</p><p><code>int n = sc.nextInt();</code>: Beolvassa a csomópontok ($N$) számát.</p><p><code>int m = sc.nextInt();</code>: Beolvassa az élek ($M$) számát.</p><p><code>List> adj = new ArrayList<>(n + 1);</code>: Létrehozza az eredeti gráf éllistáját.</p><p><code>List> adjt = new ArrayList<>(n + 1);</code>: Létrehozza a transzponált gráf éllistáját.</p><p><code>for (int i = 0; i <= n; i++) {</code>: Ciklus a gráfok inicializálásához (méretezés a 0. indexet is tartalmazva).</p><p><code>adj.add(new ArrayList<>());</code>: Hozzáad egy üres listát minden csomóponthoz az eredeti gráfban.</p><p><code>adjt.add(new ArrayList<>());</code>: Hozzáad egy üres listát minden csomóponthoz a transzponált gráfban.</p><p><code>for (int i = 0; i < m; i++) {</code>: Ciklus az élek beolvasásához ($M$ alkalommal).</p><p><code>int x = sc.nextInt();</code>: Beolvassa az él kiindulási pontját ($X$).</p><p><code>int y = sc.nextInt();</code>: Beolvassa az él célpontját ($Y$).</p><p><code>adj.get(x).add((long) y);</code>: Hozzáadja az $X \rightarrow Y$ élt az eredeti gráfhoz.</p><p><code>adjt.get(y).add((long) x);</code>: Hozzáadja a fordított élt ($Y \rightarrow X$) a transzponált gráfhoz.</p><p><code>long[] finish = new long[n + 1];</code>: Létrehozza a befejezési idők tömbjét.</p><p><code>Arrays.fill(finish, -1);</code>: Inicializálja a befejezési idő tömböt -1-gyel.</p><p><code>int[] vis = new int[n + 1];</code>: Létrehozza a látogatottsági tömböt.</p><p><code>long[] timer = new long[1];</code>: Létrehozza az időzítő számlálót (egy elemű tömbként, hogy a DFS-ben átadható legyen referencia szerint).</p><p><code>for (int i = 1; i <= n; i++) {</code>: Ciklus minden csomópontra (1-től $N$-ig).</p><p><code>if (vis[i] == 0) {</code>: Ha a csomópont még nem volt látogatott.</p><p><code>dfs(i, adj, finish, timer, vis);</code>: Végrehajtja az első DFS-t az eredeti gráfban a befejezési idők meghatározásához.</p><p><code>Integer[] ord = new Integer[n];</code>: Létrehoz egy tömböt a csomópontok indexeinek tárolására (1-től $N$-ig).</p><p><code>for (int i = 0; i < n; i++) { ord[i] = i + 1; }</code>: Feltölti a tömböt az indexekkel.</p><p><code>Arrays.sort(ord, (a, b) -> Long.compare(finish[b], finish[a]));</code>: Rendezi az indexeket a befejezési idő csökkenő sorrendje szerint (legkésőbb befejezett elől).</p><p><code>Arrays.fill(vis, 0);</code>: Visszaállítja a látogatottsági tömböt 0-ra a második DFS előtt.</p><p><code>long c = 0;</code>: Inicializálja a királyságok (SCC) számlálóját.</p><p><code>long[] kingdom = new long[n + 1];</code>: Létrehozza a tömböt, ami tárolja, melyik csomópont melyik királysághoz tartozik.</p><p><code>for (int i = 0; i < n; i++) {</code>: Végigmegy a csomópontokon a rendezett sorrendben.</p><p><code>if (vis[ord[i]] == 0) {</code>: Ha az aktuális csomópont még nem tartozik egy királysághoz sem (azaz egy új SCC kezdete).</p><p><code>c++;</code>: Növeli a királyságok számát.</p><p><code>dfs2(ord[i], vis, adjt, c, kingdom);</code>: Végrehajtja a második DFS-t a transzponált gráfban, ezzel megtalálva és megjelölve a teljes új SCC-t (c azonosítóval).</p><p><code>System.out.println(c);</code>: Kiírja a talált királyságok (SCC-k) teljes számát.</p><p><code>StringBuilder sb = new StringBuilder();</code>: Inicializál egy StringBuilder-t a hatékony string-összefűzéshez.</p><p><code>for (int i = 1; i <= n; i++) {</code>: Ciklus minden csomóponton (1-től $N$-ig).</p><p><code>sb.append(kingdom[i]).append(" ");</code>: Hozzáadja a csomóponthoz tartozó királyság azonosítóját a stringhez.</p><p><code>System.out.println(sb.toString().trim());</code>: Kiírja az eredményt (melyik csomópont melyik királysághoz tartozik), eltávolítva a végén lévő felesleges szóközt.</p><p><code>}</code>: A main metódus záró tagje.</p><p><code>}</code>: A KingdomCses osztály záró tagje.</p>        
             </pre>
         </div>
     </div>
