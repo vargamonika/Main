@@ -66,14 +66,23 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
         .code-container {
+
             background-color: var(--code-bg-color);
             padding: 15px;
             border-radius: 8px;
             overflow-x: auto;
             font-family: 'Courier New', Courier, monospace;
+            white-space: pre-wrap; /* Ez tartja meg a formázott bekezdéseket és törli a sort, ha szükséges */
+            word-wrap: break-word; /* Ez a régebbi IE/Firefox szótörés */
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
             white-space: pre-wrap;
-            word-wrap: break-word;
-        }
+    
+            /* ÚJ: A kényszerített sortörés beállítása */
+            word-wrap: break-word; /* Tartsd meg a kompatibilitás miatt */
+            word-break: break-word;
+}
+            
         ul {
             list-style-type: none;
             padding: 0;
