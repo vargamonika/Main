@@ -215,7 +215,7 @@ A kód részletes magyarázata
 2. "Szülő" hegyek megkeresése
 
 <b>Map<Integer, Integer> up = new HashMap<>();</b>: Létrehoz egy térképet (Map), ami a hegyek "szülő-gyerek" kapcsolatát tárolja.
-<b>Stack<Pair> stack = new Stack<>();</b>: Létrehoz egy vermet (Stack), ami a hegyek magasság-index párosait tárolja. A verem úgy működik, mint egy tálca a menzán: amit utoljára raktál rá, azt veszed le először.
+<b>Stack<Pair> stack = new Stack<>();</b>: Létrehoz egy vermet (Stack), ami a hegyek magasság-index párosait tárolja. A verem úgy működik, mint egy zsák: amit utoljára raktál bele, azt veszed ki először.
 <b>stack.push(new Pair(Double.MAX_VALUE, null));</b>: A verembe betesz egy speciális, virtuális "hegyet" a lehető legnagyobb magassággal, ami biztosítja, hogy a verem soha ne legyen üres.
 <b>for (int i = 0; i < heights.length; i++) { ... }</b>: Egy ciklus, ami végigmegy az összes bemeneti hegyen.
 <b>Integer kid = null;</b>: Segédváltozó, ami azokat a hegyeket tárolja, amiket a veremből kiveszünk.
