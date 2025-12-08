@@ -290,26 +290,26 @@ public class KingdomCses {
             
     <b>public static void main(String[] args) {</b>: A program belépési pontja.
     <b>FastReader sc = new FastReader();</b>: Létrehozza a gyors beolvasó objektumot.
-    <b>int n = sc.nextInt();</b>: Beolvassa a csomópontok ($N$) számát.
-    <b>int m = sc.nextInt();</b>: Beolvassa az élek ($M$) számát.
+    <b>int n = sc.nextInt();</b>: Beolvassa a csomópontok (N) számát.
+    <b>int m = sc.nextInt();</b>: Beolvassa az élek (M) számát.
     <b>List> adj = new ArrayList<>(n + 1);</b>: Létrehozza az eredeti gráf éllistáját.
     <b>List> adjt = new ArrayList<>(n + 1);</b>: Létrehozza a transzponált gráf éllistáját.
     <b>for (int i = 0; i <= n; i++) {</b>: Ciklus a gráfok inicializálásához (méretezés a 0. indexet is tartalmazva).
     <b>adj.add(new ArrayList<>());</b>: Hozzáad egy üres listát minden csomóponthoz az eredeti gráfban.
     <b>adjt.add(new ArrayList<>());</b>: Hozzáad egy üres listát minden csomóponthoz a transzponált gráfban.
-    <b>for (int i = 0; i < m; i++) {</b>: Ciklus az élek beolvasásához ($M$ alkalommal).
-    <b>int x = sc.nextInt();</b>: Beolvassa az él kiindulási pontját ($X$).
-    <b>int y = sc.nextInt();</b>: Beolvassa az él célpontját ($Y$).
-    <b>adj.get(x).add((long) y);</b>: Hozzáadja az $X \rightarrow Y$ élt az eredeti gráfhoz.
-    <b>adjt.get(y).add((long) x);</b>: Hozzáadja a fordított élt ($Y \rightarrow X$) a transzponált gráfhoz.
+    <b>for (int i = 0; i < m; i++) {</b>: Ciklus az élek beolvasásához (M alkalommal).
+    <b>int x = sc.nextInt();</b>: Beolvassa az él kiindulási pontját (X).
+    <b>int y = sc.nextInt();</b>: Beolvassa az él célpontját (Y).
+    <b>adj.get(x).add((long) y);</b>: Hozzáadja az élt az eredeti gráfhoz.
+    <b>adjt.get(y).add((long) x);</b>: Hozzáadja a fordított élt a transzponált gráfhoz.
     <b>long[] finish = new long[n + 1];</b>: Létrehozza a befejezési idők tömbjét.
     <b>Arrays.fill(finish, -1);</b>: Inicializálja a befejezési idő tömböt -1-gyel.
     <b>int[] vis = new int[n + 1];</b>: Létrehozza a látogatottsági tömböt.
     <b>long[] timer = new long[1];</b>: Létrehozza az időzítő számlálót (egy elemű tömbként, hogy a DFS-ben átadható legyen referencia szerint).</b>
-    <b>for (int i = 1; i <= n; i++) {</b>: Ciklus minden csomópontra (1-től $N$-ig).
+    <b>for (int i = 1; i <= n; i++) {</b>: Ciklus minden csomópontra (1-től N-ig).
     <b>if (vis[i] == 0) {</b>: Ha a csomópont még nem volt látogatott.
     <b>dfs(i, adj, finish, timer, vis);</b>: Végrehajtja az első DFS-t az eredeti gráfban a befejezési idők meghatározásához.
-    <b>Integer[] ord = new Integer[n];</b>: Létrehoz egy tömböt a csomópontok indexeinek tárolására (1-től $N$-ig).
+    <b>Integer[] ord = new Integer[n];</b>: Létrehoz egy tömböt a csomópontok indexeinek tárolására (1-től N-ig).
     <b>for (int i = 0; i < n; i++) { ord[i] = i + 1; }</b>: Feltölti a tömböt az indexekkel.
     <b>Arrays.sort(ord, (a, b) -> Long.compare(finish[b], finish[a]));</b>: Rendezi az indexeket a befejezési idő csökkenő sorrendje szerint (legkésőbb befejezett elől).
     <b>Arrays.fill(vis, 0);</b>: Visszaállítja a látogatottsági tömböt 0-ra a második DFS előtt.
@@ -321,7 +321,7 @@ public class KingdomCses {
     <b>dfs2(ord[i], vis, adjt, c, kingdom);</b>: Végrehajtja a második DFS-t a transzponált gráfban, ezzel megtalálva és megjelölve a teljes új SCC-t (c azonosítóval).
     <b>System.out.println(c);</b>: Kiírja a talált királyságok (SCC-k) teljes számát.
     <b>StringBuilder sb = new StringBuilder();</b>: Inicializál egy StringBuilder-t a hatékony string-összefűzéshez.
-    <b>for (int i = 1; i <= n; i++) {</b>: Ciklus minden csomóponton (1-től $N$-ig).
+    <b>for (int i = 1; i <= n; i++) {</b>: Ciklus minden csomóponton (1-től N-ig).
     <b>sb.append(kingdom[i]).append(" ");</b>: Hozzáadja a csomóponthoz tartozó királyság azonosítóját a stringhez.
     <b>System.out.println(sb.toString().trim());</b>: Kiírja az eredményt (melyik csomópont melyik királysághoz tartozik), eltávolítva a végén lévő felesleges szóközt.
       
