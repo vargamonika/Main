@@ -124,7 +124,7 @@
 
 <p>1.	Fenwick-fa (Binary Indexed Tree): A FenwickTree osztály felelős a gyerekek hatékony nyilvántartásáért. Kezdetben minden gyerek egy-egy 1-es értéket kap a fában, ami azt jelenti, hogy "játékban van". Ha egy gyereket eltávolítunk, az értékét 0-ra állítjuk. A fa lehetővé teszi, hogy O(log n) idő alatt kiszámítsuk, hány játékban levő gyerek van egy adott pozícióig.</p>
 <div class="image-container">
-        <img src="Fenwick fa.png" alt="BIT">
+        <img src="Fenwick fa 2.png" alt="BIT">
     </div>
 <p>2.	findKth(k) metódus: Ez a legfontosabb rész. Bináris keresést használ a Fenwick-fán, hogy O(log n * log n) idő alatt megtalálja a k-adik játékban levő gyereket. A keresés abból áll, hogy egy "gyorsítótár" segítségével megkeressük azt a pozíciót, ahol a gyerekszám megegyezik a keresett sorszámmal.</p>
 <p>3.	Fő logika a main metódusban:</p>
