@@ -117,6 +117,9 @@
         <p>A program sorra veszi a hegyeket, és verem (stack) segítségével épít szülő–gyerek kapcsolatokat közöttük. Itt a szülő mindig egy magasabb hegy, nem pedig egy alacsonyabb.</p>
         <p>Képzeld el, hogy a hegyeket egymás után rakod egy verembe (stack). A verem tetején mindig az a legutóbb látott, még „aktív” magasabb hegy áll, amihez viszonyítjuk a következő bejövő hegyet.</p>
         <p>A verem úgy működik, hogy amit utoljára raktál bele, azt veszed ki először (LIFO).<p>
+            <div class="image-container">
+        <img src="LIFO.png" alt="LIFO">
+    </div>
         <p>A program végigmegy a hegyek listáján és minden lépésben a következőt csinálja:</p>
         <ul>
             <li>Amíg a mostani hegy magasabb, mint a verem tetején lévő hegy, kivesszük (pop) a veremből a legfelsőt. (Ezzel eltávolítjuk azokat a nála kisebb hegyeket, amelyekre most már „rátettünk” egy magasabbat.)
