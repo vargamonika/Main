@@ -175,12 +175,7 @@ Ez a klasszikus Csúcserősen Összefüggő Komponensek (Strongly Connected Comp
 <li>{1,2,3} az 1. királyság.</li>
 <li>{4,5} a 2. királyság.</li>
         </ul>
-<p>A kimenet tehát: 2 királyság, és a bolygók azonosítói: 1 1 1 2 2.</p>
-
-<p>Egyéb felmerülő algoritmus:</p>  
-<div class="image-container">
-        <img src="Euklideszi.png" alt="Euklideszi algoritmus">
-    </div>        
+<p>A kimenet tehát: 2 királyság, és a bolygók azonosítói: 1 1 1 2 2.</p>   
 
     <div class="section">
         <h2>Java kód</h2>
@@ -216,10 +211,6 @@ public class KingdomCses {
         int nextInt() {
             return Integer.parseInt(next());
         }
-    }
- 
-    static long gcd(long a, long b) {
-        return b == 0 ? a : gcd(b, a % b);
     }
  
     static void dfs(int node, List<List<Long>> adj, long[] finish, long[] timer, int[] vis) {
