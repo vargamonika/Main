@@ -139,43 +139,6 @@
 <p>Ez a megoldás a O(n * log^2 n) komplexitású, ami a megadott időkorláton belül van.</p>
     </div>
 
-        <h2>3. A példa futtatása (n=7, k=2)</h2>
-        
-<p>Kezdetben: A körben 7 gyerek van (1, 2, 3, 4, 5, 6, 7). Az currentIndex 0.</p>
-<p>1. kör:</p>
-    <ul>
-<li>currentIndex = (0 + 2) % 7 = 2. A 3. gyereket távolítjuk el.</li>
-<li>Kör: (1, 2, 4, 5, 6, 7). A túlélők száma 6. A currentIndex 2.</li>
-<li>3 kiírva.</li>
-    <ul/>
-<p>2. kör:</p>
-        <ul>
-<li>currentIndex = (2 + 2) % 6 = 4. A 6. gyereket távolítjuk el.</li>
-<li>Kör: (1, 2, 4, 5, 7). A túlélők száma 5. A currentIndex 4.</li>
-<li>6 kiírva.</li>
-        </ul>    
-<p>3. kör:</p>
-        <ul>
-<li>currentIndex = (4 + 2) % 5 = 1. A 2. gyereket távolítjuk el.</li>
-<li>Kör: (1, 4, 5, 7). A túlélők száma 4. A currentIndex 1.</li>
-<li>2 kiírva.</li>
-<ul>
-<p>4. kör:</p>
-<li>currentIndex = (1 + 2) % 4 = 3. A 7. gyereket távolítjuk el.</li>
-<li>Kör: (1, 4, 5). A túlélők száma 3. A currentIndex 3.</li>
-<li>7 kiírva.</li>
-<p>5. kör:</p>
-<li>currentIndex = (3 + 2) % 3 = 2. Az 5. gyereket távolítjuk el.</li>
-<li>Kör: (1, 4). A túlélők száma 2. A currentIndex 2.</li>
-<li>5 kiírva.</li>
-<p>6. kör:</p>
-<li>currentIndex = (2 + 2) % 2 = 0. Az 1. gyereket távolítjuk el.</li>
-<li>Kör: (4). A túlélők száma 1. A currentIndex 0.</li>
-<li>1 kiírva.</li>
-<p>7. kör:</p>
-<li>currentIndex = (0 + 2) % 1 = 0. A 4. gyereket távolítjuk el.</li>
-<li>4 kiírva.</li>
-<p>A kiírt sorrend: 3 6 2 7 5 1 4.</p>
     </div>
 
     <div class="section">
