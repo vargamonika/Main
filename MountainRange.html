@@ -163,32 +163,33 @@ public class MountainGliding {
             heights[i] = Integer.parseInt(heightsInput[i]);
         }
 
-        Map<Integer, Integer> up = new HashMap<>();
-        Stack<Pair> stack = new Stack<>();
+        Map<Integer, Integer> up = new HashMap<>(); <span style="color: blue;">(Szülő-gyerek kapcsolatot tárol)</span style="color: blue;">
+        Stack<Pair> stack = new Stack<>(); <span style="color: blue;">(Magasság-index kapcsolatot tárol)</span style="color: blue;">
         stack.push(new Pair(Double.MAX_VALUE, null));
 
-        for (int i = 0; i < heights.length; i++) {
+        for (int i = 0; i < heights.length; i++) { <span style="color: blue;">(végigmegy a bemeneti hegyeken)</span style="color: blue;">
             Integer kid = null;
-            while (heights[i] > stack.peek().height) {
+            while (heights[i] > stack.peek().height) { <span style="color: blue;">(Amíg a jelenlegi ehgy magasabb, addig kiveszi a veremben levő hegyeket)</span style="color: blue;">
                 kid = stack.pop().index;
             }
-            if (heights[i] < stack.peek().height) {
+            if (heights[i] < stack.peek().height) { <span style="color: blue;">(Ha a jelenlegi ehgy alacsonyabb, beteszi az "up"-ba)</span style="color: blue;">
                 up.put(i, stack.peek().index);
                 if (kid != null) {
-                    up.put(kid, i);
+                    up.put(kid, i); <span style="color: blue;">(Az utoljára kivett hegy szülője lesz a mostani hegy)</span style="color: blue;">
                 }
-                stack.push(new Pair(heights[i], i));
+                stack.push(new Pair(heights[i], i)); <span style="color: blue;">(A jelenlegi hegyet beteszi a verembe)</span style="color: blue;">
             }
         }
-        Map<Integer, Integer> memo = new HashMap<>();
+        Map<Integer, Integer> memo = new HashMap<>(); <span style="color: blue;">(Memoizáció, a már kiszámolt útvonalak hosszát)</span style="color: blue;">
         memo.put(null, 0);
 
         int maxDepth = 0;
         for (Integer key : up.keySet()) {
-            maxDepth = Math.max(maxDepth, depth(key, up, memo));
+            maxDepth = Math.max(maxDepth, depth(key, up, memo)); <span style="color: blue;">(Meghívja a mélység metódust minden hegyre,
+                kiszámolja az onnan induló út hosszát)
         }
 
-        System.out.println(maxDepth);
+        System.out.println(maxDepth); <span style="color: blue;">(Kiírja az eredményt)</span style="color: blue;">
     }
 
     private static int depth(Integer i, Map<Integer, Integer> up, Map<Integer, Integer> memo) {
