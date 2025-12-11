@@ -165,7 +165,9 @@ import java.io.InputStreamReader;
 public class JosephusProblemII {
 
     static class FenwickTree {
-        private int[] tree;
+        private int[] tree; <span style="color: blue;">(A Fenwick-fa reprezentációja)
+        Nem az eredeti tömb elemeit tárolja, hanem részösszegeket, ezért az adott elemhez kapcsolódó 
+            előtagösszegeket is frissíteni kell.)</span style="color: blue;">
         private int size;
 
         public FenwickTree(int size) {
@@ -173,11 +175,11 @@ public class JosephusProblemII {
             this.tree = new int[size + 1];
         }
 
-        public void add(int index, int value) {
+        public void add(int index, int value) { <span style="color: blue;">(Hozzáadja a megadott értéket a megadott index-szel)</span style="color: blue;">
             index++;
             while (index <= size) {
                 tree[index] += value;
-                index += index & (-index);
+                index += index & (-index); <span style="color: blue;">(A fában felfelé haladva számolja az elemek összegét)</span style="color: blue;">
             }
         }
 
@@ -186,12 +188,12 @@ public class JosephusProblemII {
             int sum = 0;
             while (index > 0) {
                 sum += tree[index];
-                index -= index & (-index);
+                index -= index & (-index); <span style="color: blue;">(A gyökér felé haladva számolja az elemek összegét)</span style="color: blue;">
             }
             return sum;
         }
 
-        public int findKth(int k) {
+        public int findKth(int k) {  <span style="color: blue;">(Bináris kereséssel találja meg a következő k-adik elemet)</span style="color: blue;">
             int low = 0;
             int high = size - 1;
             int result = -1;
