@@ -205,7 +205,8 @@ public class MountainGliding {
         System.out.println(maxDepth); <span style="color: blue;">(Kiírja az eredményt)</span style="color: blue;">
     }
 
-    private static int depth(Integer i, Map<Integer, Integer> up, Map<Integer, Integer> memo) {
+    private static int depth(Integer i, Map<Integer, Integer> up, Map<Integer, Integer> memo) {  <span style="color: blue;">(Rekurzívan
+        kiszámítja az adott hegy mélységét)</span style="color: blue;">
         if (!memo.containsKey(i)) {
             memo.put(i, depth(up.get(i), up, memo) + 1);
         }
