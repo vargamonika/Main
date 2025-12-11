@@ -178,7 +178,7 @@ public class MountainGliding {
             Integer kid = null; <span style="color: blue;">(Kivett hegyeket tárolja)</span style="color: blue;">
             while (heights[i] > stack.peek().height) { <span style="color: blue;">(Amíg a jelenlegi hegy magasabb, 
                 addig kiveszi a veremben levő hegyeket)</span style="color: blue;">
-                kid = stack.pop().index;
+                kid = stack.pop().index; <span style="color: blue;">(Elmenti az indexét a kid változóba)</span style="color: blue;">
             }
             if (heights[i] < stack.peek().height) { <span style="color: blue;">(Ha a jelenlegi hegy alacsonyabb, beteszi az "up"-ba)</span style="color: blue;">
                 up.put(i, stack.peek().index);
