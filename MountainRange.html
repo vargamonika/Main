@@ -175,12 +175,12 @@ public class MountainGliding {
         stack.push(new Pair(Double.MAX_VALUE, null));
 
         for (int i = 0; i < heights.length; i++) { <span style="color: blue;">(végigmegy a bemeneti hegyeken)</span style="color: blue;">
-            Integer kid = null;
+            Integer kid = null; <span style="color: blue;">(Kivett hegyeket tárolja)</span style="color: blue;">
             while (heights[i] > stack.peek().height) { <span style="color: blue;">(Amíg a jelenlegi hegy magasabb, 
                 addig kiveszi a veremben levő hegyeket)</span style="color: blue;">
                 kid = stack.pop().index;
             }
-            if (heights[i] < stack.peek().height) { <span style="color: blue;">(Ha a jelenlegi ehgy alacsonyabb, beteszi az "up"-ba)</span style="color: blue;">
+            if (heights[i] < stack.peek().height) { <span style="color: blue;">(Ha a jelenlegi hegy alacsonyabb, beteszi az "up"-ba)</span style="color: blue;">
                 up.put(i, stack.peek().index);
                 if (kid != null) {
                     up.put(kid, i); <span style="color: blue;">(Az utoljára kivett hegy szülője lesz a mostani hegy)</span style="color: blue;">
