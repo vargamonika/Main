@@ -230,8 +230,8 @@ public class KingdomCses {
         int n = sc.nextInt();
         int m = sc.nextInt();
  
-        List<List<Long>> adj = new ArrayList<>(n + 1);
-        List<List<Long>> adjt = new ArrayList<>(n + 1);
+        List<List<Long>> adj = new ArrayList<>(n + 1); <span style="color: blue;">(Eredeti gráf)</span style="color: blue;">
+        List<List<Long>> adjt = new ArrayList<>(n + 1); <span style="color: blue;">(Transzponált gráf)</span style="color: blue;">
         for (int i = 0; i <= n; i++) {
             adj.add(new ArrayList<>());
             adjt.add(new ArrayList<>());
