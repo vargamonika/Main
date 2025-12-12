@@ -205,8 +205,8 @@ public class KingdomCses {
         }
     } <span style="color: blue;">(Eddig a pontig a kód az adatbeolvasást végzi, és optimalizálja azt a sebesség szempontjából)</span style="color: blue;">
  
-    static void dfs(int node, List<List<Long>> adj, long[] finish, long[] timer, int[] vis) { Bejárja a gráfot és végén 
-       <span style="color: blue;">(amikor egy csúcsot már nem tud tovább bejárni) beállítja a csúcs befejezési idejét (finish időt)</span style="color: blue;">
+    static void dfs(int node, List<List<Long>> adj, long[] finish, long[] timer, int[] vis) <span style="color: blue;">{Bejárja a gráfot és végén 
+       (amikor egy csúcsot már nem tud tovább bejárni) beállítja a csúcs befejezési idejét (finish időt)</span style="color: blue;">
         vis[node] = 1;
         for (long i : adj.get(node)) {
             if (vis[(int) i] == 0) {
