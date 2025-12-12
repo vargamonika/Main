@@ -215,7 +215,8 @@ public class KingdomCses {
         finish[node] = timer[0]++;
     }
  
-    static void dfs2(int node, int[] vis, List<List<Long>> adj, long king, long[] kingdom) {
+    static void dfs2(int node, int[] vis, List<List<Long>> adj, long king, long[] kingdom) { <span style="color: blue;">(A második dfs -t a legmagasabb 
+        befejezési idővel rendelkező csomóponttal kell kezdeni)</span style="color: blue;">
         vis[node] = 1;
         kingdom[node] = king;
         for (long i : adj.get(node)) {
@@ -247,7 +248,7 @@ public class KingdomCses {
         long[] finish = new long[n + 1];
         Arrays.fill(finish, -1);
         int[] vis = new int[n + 1];
-        long[] timer = new long[1];
+        long[] timer = new long[1]; <span style="color: blue;">(Nem fizikai idő az értéke. Rögzíti a sorrendet, ahogy a dfs hívásai lezárulnak)</span style="color: blue;">
  
         for (int i = 1; i <= n; i++) {
             if (vis[i] == 0) {
@@ -255,18 +256,18 @@ public class KingdomCses {
             }
         }
  
-        Integer[] ord = new Integer[n];
+        Integer[] ord = new Integer[n]; <span style="color: blue;">(Létrehozza az n csomópontot tartalmazó index tömböt)</span style="color: blue;">
         for (int i = 0; i < n; i++) {
             ord[i] = i + 1;
         }
  
-        Arrays.sort(ord, (a, b) -> Long.compare(finish[b], finish[a]));
+        Arrays.sort(ord, (a, b) -> Long.compare(finish[b], finish[a])); <span style="color: blue;">(Befejezési idő szerint csökkenő sorrenbe rendezi)</span style="color: blue;">
  
         Arrays.fill(vis, 0);
         long c = 0;
         long[] kingdom = new long[n + 1]; <span style="color: blue;">(A kingdom tömbbe kerülnek az eredmények)</span style="color: blue;">
  
-        for (int i = 0; i < n; i++) {
+        for (int i = 0; i < n; i++) { 
             if (vis[ord[i]] == 0) {
                 c++;
                 dfs2(ord[i], vis, adjt, c, kingdom);
