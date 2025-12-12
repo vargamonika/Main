@@ -165,7 +165,7 @@ import java.io.InputStreamReader;
 public class JosephusProblemII {
 
     static class FenwickTree {
-        private int[] tree; <span style="color: blue;">(A Fenwick-fa reprezentációja)
+        private int[] tree; <span style="color: blue;">(A Fenwick-fa reprezentációja.
         Nem az eredeti tömb elemeit tárolja, hanem részösszegeket, ezért az adott elemhez kapcsolódó 
             előtagösszegeket is frissíteni kell.)</span style="color: blue;">
         private int size;
@@ -179,7 +179,7 @@ public class JosephusProblemII {
             index++;
             while (index <= size) {
                 tree[index] += value;
-                index += index & (-index); <span style="color: blue;">(A fában felfelé haladva számolja az elemek összegét)</span style="color: blue;">
+                index += index & (-index); <span style="color: blue;">(A fában felfelé haladva számolja az elemek előtag-összegét)</span style="color: blue;">
             }
         }
 
@@ -188,7 +188,7 @@ public class JosephusProblemII {
             int sum = 0;
             while (index > 0) {
                 sum += tree[index];
-                index -= index & (-index); <span style="color: blue;">(A gyökér felé haladva számolja az elemek összegét)</span style="color: blue;">
+                index -= index & (-index); <span style="color: blue;">(A gyökér felé haladva számolja az elemek előtag-összegét)</span style="color: blue;">
             }
             return sum;
         }
@@ -227,11 +227,11 @@ public class JosephusProblemII {
 
         int currentIndex = 0;
 
-        for (int i = n; i > 0; i--) {
+        for (int i = n; i > 0; i--) { 
             currentIndex = (currentIndex + k) % i;
             int removedIndex = ft.findKth(currentIndex + 1);
             ft.add(removedIndex, -1);
-            out.print(removedIndex + 1 + " ");
+            out.print(removedIndex + 1 + " "); <span style="color: blue;">(Itt történik a kieső elemek sorrendben történő kiírása)</span style="color: blue;">
         }
         out.close();
     }
