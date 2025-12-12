@@ -267,9 +267,10 @@ public class KingdomCses {
         long c = 0;
         long[] kingdom = new long[n + 1]; <span style="color: blue;">(A kingdom tömbbe kerülnek az eredmények)</span style="color: blue;">
  
-        for (int i = 0; i < n; i++) { <span style="color: blue;">(Végigmegy a csúcsokon a meghatározó sorrendben, és minden alkalommal, amikor egy be nem járt csúcsot talál, elindítja 
-                              a transzponált gráfon a DFS-t. Ez a DFS (a dfs2) eléri az összes csúcsot, amely az adott SCC-hez 
-                              tartozik, és mindegyiket címkézi az aktuális c azonosítóval)</span style="color: blue;">
+        for (int i = 0; i < n; i++) { <span style="color: blue;">(Végigmegy a csúcsokon a meghatározó sorrendben, és minden alkalommal, 
+            amikor egy be nem járt csúcsot talál, elindítja a transzponált gráfon a DFS-t. 
+            Ez a DFS (a dfs2) eléri az összes csúcsot, amely az adott SCC-hez tartozik, és mindegyiket címkézi 
+            az aktuális c azonosítóval)</span style="color: blue;">
             if (vis[ord[i]] == 0) {
                 c++;
                 dfs2(ord[i], vis, adjt, c, kingdom);
