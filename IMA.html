@@ -98,10 +98,10 @@ print("Mintavételi frekvencia:", mintaveteli_frekvencia, "Hz")
 sebessegek = []
 
 for i in range(len(ap1) - 1):
-    seb = (ap1[i+1] - ap1[i]) / (time[i+1] - time[i])
+    seb = abs((ap1[i+1] - ap1[i]) / (time[i+1] - time[i]))
     sebessegek.append(seb)
 
-max_sebesseg = max(sebessegek, key=abs)
+max_sebesseg = max(sebessegek)
 print("Legnagyobb sebesség:", max_sebesseg, "mV/ms")
 
 #amplitúdó
