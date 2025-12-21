@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+xpon<!DOCTYPE html>
 <html lang="hu">
 <head>
     <meta charset="UTF-8">
@@ -11,7 +11,6 @@
     </style>
 </head>
 <body>
-
     <h1>Python Feladatok és Megoldások</h1>
 
     <div class="code-container">
@@ -226,9 +225,53 @@ plt.show()
     </div>
 
     <div class="code-container">
-        <h2>4. Statisztikai Számítások</h2>
-        <p>Maximum és minimum értékek keresése az adatsorban.</p>
-        <pre><code># Ide jön a 4. Python kódod...
+        <h2>4. Exponenciális illesztés</h2>
+        <pre><code>
+            import numpy as np
+import matplotlib.pyplot as plt
+
+# adatok beolvasása
+X = []
+Y = []
+
+with open("Exponencialis.csv", "r", encoding="utf-8") as f:
+    next(f)
+    for line in f:
+        if not line.strip():
+            continue
+        x, y = line.strip().split(",")
+        X.append(float(x))
+        Y.append(float(y))
+
+X = np.array(X)
+Y = np.array(Y)
+
+# exponenciális illesztés: y = a * e^(b*x)
+lnY = np.log(Y)
+b, ln_a = np.polyfit(X, lnY, 1)
+a = np.exp(ln_a)
+
+Y_fit = a * np.exp(b * X)
+
+# R² számítása
+ss_res = np.sum((Y - Y_fit) ** 2)
+ss_tot = np.sum((Y - np.mean(Y)) ** 2)
+r2 = 1 - ss_res / ss_tot
+
+# ábrázolás
+plt.scatter(X, Y, label="Mért adatok")
+plt.plot(X, Y_fit, color="red",
+         label=f"Exponenciális illesztés (R²={r2:.3f})")
+plt.xlabel("X")
+plt.ylabel("Y")
+plt.title("Exponenciális illesztés")
+plt.legend()
+plt.grid(True)
+plt.show()
+
+# paraméterek kiírása
+print(f"Illesztett függvény: y = {a:.2f} * e^({b:.2f}x)")
+print(f"R² = {r2:.3f}")
 </code></pre>
     </div>
 
