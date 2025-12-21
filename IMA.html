@@ -209,9 +209,9 @@ A, B, C = params
 Y_fit = A * np.sin(omega * X) + B * np.cos(omega * X) + C
 
 # R²
-ss_res = np.sum((Y - Y_fit) ** 2)
-ss_tot = np.sum((Y - np.mean(Y)) ** 2)
-r2 = 1 - ss_res / ss_tot
+maradek_negyzetosszeg = np.sum((Y - Y_fit) ** 2)
+teljes_negyzetosszeg = np.sum((Y - np.mean(Y)) ** 2)
+r2 = 1 - maradek_negyzetosszeg / teljes_negyzetosszeg
 
 # ábra
 plt.scatter(X, Y, label="Mért adatok")
