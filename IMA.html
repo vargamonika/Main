@@ -291,39 +291,59 @@ Y = []
 
 with open("Szurok.csv", "r", encoding="utf-8") as f:
     next(f)
-    for line in f:
-        if not line.strip():
+    for sor in f:
+        sor=sor.strip()
+        if not sor:
             continue
-        x, y = line.strip().split(",")
-        X.append(float(x))
-        Y.append(float(y))
+
+        adat=sor.strip().split(",")
+
+        if len(adat) < 2:
+            continue
+
+        X.append(float(adat[0]))
+        Y.append(float(adat[1]))
 
 # ===== Átlagoló szűrő =====
-def atlagolo_szuro(jel, ablak):
-    szurt = []
-    for i in range(len(jel)):
-        start = max(0, i - ablak // 2)
-        end = min(len(jel), i + ablak // 2 + 1)
-        szurt.append(sum(jel[start:end]) / (end - start))
-    return szurt
+Y_atlag=[]
+for i in range(len(Y)):
+    if i==0:
+        atlag=(Y[i]+Y[i+1])/2
+        Y_atlag.append(atlag)
+    if i==(len(Y)-1):
+        atlag=(Y[len(Y)-1]+Y[len(Y)-2])/2
+        Y_atlag.append(atlag)
+    if i!=0 and i!=(len(Y)-1):
+        atlag=((Y[i-1])+Y[i]+Y[i+1])/3
+        Y_atlag.append(atlag)
 
 # ===== Medián szűrő =====
-def median_szuro(jel, ablak):
-    szurt = []
-    for i in range(len(jel)):
-        start = max(0, i - ablak // 2)
-        end = min(len(jel), i + ablak // 2 + 1)
-        resz = sorted(jel[start:end])
-        szurt.append(resz[len(resz) // 2])
-    return szurt
+Y_median = []
+n = len(Y)
 
-# ===== Szűrés =====
-ablak_meret = 3
-Y_atlag = atlagolo_szuro(Y, ablak_meret)
-Y_median = median_szuro(Y, ablak_meret)
+for i in range(n):
+    if i == 0:
+        # Első elem: az első kettőből a medián (ami megegyezik az átlagukkal)
+        ablak = sorted([Y[i], Y[i+1]])
+        ertek = (ablak[0] + ablak[1]) / 2
+        Y_median.append(ertek)
+        
+    elif i == n - 1:
+        # Utolsó elem: az utolsó kettőből a medián (szintén az átlaguk)
+        ablak = sorted([Y[i-1], Y[i]])
+        ertek = (ablak[0] + ablak[1]) / 2
+        Y_median.append(ertek)
+        
+    else:
+        # Középső elemek: a három szomszéd közül a középső
+        ablak = sorted([Y[i-1], Y[i], Y[i+1]])
+        # A sorba rendezett listában az 1-es indexű a középső elem
+        ertek = ablak[1]
+        Y_median.append(ertek)
+
 
 # ===== Ábrázolás =====
-plt.plot(X, Y, label="Eredeti jel", alpha=0.6)
+plt.plot(X, Y, label="Eredeti jel")
 plt.plot(X, Y_atlag, label="Átlagoló szűrő")
 plt.plot(X, Y_median, label="Medián szűrő")
 
