@@ -15,7 +15,7 @@
 
     <div class="code-container">
         <h2>1. Akciós potenciálok</h2>
-        <pre><code>import matplotlib.pyplot as plt
+        <pre><code>
 import matplotlib.pyplot as plt
 
 time=[]
@@ -121,7 +121,6 @@ print("AP2 időeltolódása az első folyamathoz képest:", idoeltolodas, "ms")
     <div class="code-container">
         <h2>2. Egyenes illesztése</h2>
         <pre><code>
-import csv
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -130,14 +129,20 @@ X = []
 Y = []
 
 with open("Illesztes.csv", "r", encoding="utf-8") as f:
-    reader = csv.reader(f)
-    next(reader)  # fejléc átugrása
-    for row in reader:
-        X.append(float(row[0]))
-        Y.append(float(row[1]))
+    next(f)
+    for sor in f:
+        sor=sor.strip()
+        if not sor:
+            continue
 
-X = np.array(X)
-Y = np.array(Y)
+        adat=sor.strip().split(",")
+
+        if len(adat) < 2:
+            continue
+
+        X.append(float(adat[0]))
+        Y.append(float(adat[1]))
+
 print(X)
 print(Y)
 
@@ -170,6 +175,7 @@ plt.legend()
 plt.show()
 
 print("R² érték:", r2)
+            
 </code></pre>
     </div>
     <div class="code-container">
