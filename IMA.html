@@ -273,9 +273,65 @@ print(f"Illesztett függvény: y = {a:.2f} * e^({b:.2f}x)")
 print(f"R² = {r2:.3f}")
 </code></pre>
     </div>
+ 
+    <div class="code-container">
+        <h2>4. Szinusz illesztés</h2>
+        <pre><code>
+import matplotlib.pyplot as plt
+
+# ===== Adatok beolvasása =====
+X = []
+Y = []
+
+with open("Szurok.csv", "r", encoding="utf-8") as f:
+    next(f)
+    for line in f:
+        if not line.strip():
+            continue
+        x, y = line.strip().split(",")
+        X.append(float(x))
+        Y.append(float(y))
+
+# ===== Átlagoló szűrő =====
+def atlagolo_szuro(jel, ablak):
+    szurt = []
+    for i in range(len(jel)):
+        start = max(0, i - ablak // 2)
+        end = min(len(jel), i + ablak // 2 + 1)
+        szurt.append(sum(jel[start:end]) / (end - start))
+    return szurt
+
+# ===== Medián szűrő =====
+def median_szuro(jel, ablak):
+    szurt = []
+    for i in range(len(jel)):
+        start = max(0, i - ablak // 2)
+        end = min(len(jel), i + ablak // 2 + 1)
+        resz = sorted(jel[start:end])
+        szurt.append(resz[len(resz) // 2])
+    return szurt
+
+# ===== Szűrés =====
+ablak_meret = 3
+Y_atlag = atlagolo_szuro(Y, ablak_meret)
+Y_median = median_szuro(Y, ablak_meret)
+
+# ===== Ábrázolás =====
+plt.plot(X, Y, label="Eredeti jel", alpha=0.6)
+plt.plot(X, Y_atlag, label="Átlagoló szűrő")
+plt.plot(X, Y_median, label="Medián szűrő")
+
+plt.xlabel("X")
+plt.ylabel("Y")
+plt.title("Eredeti és szűrt jelek")
+plt.legend()
+plt.grid(True)
+plt.show()
+</code></pre>
+    </div>
     
     <div class="code-container">
-        <h2>5. ADC kód kiszámítása</h2>
+        <h2>6. ADC kód kiszámítása</h2>
         <p>A 12-bites A/D konverter referenciafeszültsége 1.5 V, az adat balra igazított.
 Az A/D konverter bemenetére egy TMP36 hőmérsékletérzékelő kimenetét kötjük. A szenzor kimenetén 
             25ºC esetén 750 mV feszültség van, ennek változása lineáris, a meredekség 10mV/ºC. Az adcData értéke 
@@ -289,7 +345,7 @@ Az A/D konverter bemenetére egy TMP36 hőmérsékletérzékelő kimenetét köt
     </div>
 
 <div class="code-container">
-        <h2>6. ADC Bemeneti és Kimeneti feszültség</h2>
+        <h2>7. ADC Bemeneti és Kimeneti feszültség</h2>
         <p>Egy Vin feszültségjel feszültségosztón keresztül jut a 12-bites A/D konverter bemenetére. R1 és R2 értéke 6800 Ohm. Az A/D konverter 
             referenciafeszültsége 2.7 V, az adat jobbra igazított. Az adcData értéke 3125. Mekkora a Vin feszültségjel <0.1% pontossággal [V]</p>
         <div class="image-gallery">
