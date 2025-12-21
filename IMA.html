@@ -173,17 +173,17 @@ print("R² érték:", r2)
 </code></pre>
     </div>
     <div class="code-container">
-        <h2>3. Szinusz illesztés</h2>
+        <h2>3. Exponenciális illesztés</h2>
         <pre><code>
-            import numpy as np
+import numpy as np
 import matplotlib.pyplot as plt
 
-# adatok beolvasása listákba
+# adatok beolvasása
 X = []
 Y = []
 
-with open("Szinusz.csv", "r", encoding="utf-8") as f:
-    next(f)  # fejléc kihagyása
+with open("Exponencialis.csv", "r", encoding="utf-8") as f:
+    next(f)
     for line in f:
         if not line.strip():
             continue
@@ -194,33 +194,32 @@ with open("Szinusz.csv", "r", encoding="utf-8") as f:
 X = np.array(X)
 Y = np.array(Y)
 
-# szinusz illesztés (A·sin(wx) + B·cos(wx) + C)
-omega = 2 * np.pi / 8
+# exponenciális illesztés: y = a * e^(b*x)
+lnY = np.log(Y)
+b, ln_a = np.polyfit(X, lnY, 1)
+a = np.exp(ln_a)
 
-M = np.column_stack([
-    np.sin(omega * X),
-    np.cos(omega * X),
-    np.ones(len(X))
-])
+Y_fit = a * np.exp(b * X)
 
-params, _, _, _ = np.linalg.lstsq(M, Y, rcond=None)
-A, B, C = params
+# R² számítása
+ss_res = np.sum((Y - Y_fit) ** 2)
+ss_tot = np.sum((Y - np.mean(Y)) ** 2)
+r2 = 1 - ss_res / ss_tot
 
-Y_fit = A * np.sin(omega * X) + B * np.cos(omega * X) + C
-
-# R²
-maradek_negyzetosszeg = np.sum((Y - Y_fit) ** 2)
-teljes_negyzetosszeg = np.sum((Y - np.mean(Y)) ** 2)
-r2 = 1 - maradek_negyzetosszeg / teljes_negyzetosszeg
-
-# ábra
+# ábrázolás
 plt.scatter(X, Y, label="Mért adatok")
-plt.plot(X, Y_fit, color="red", label=f"Szinusz illesztés (R²={r2:.2f})")
+plt.plot(X, Y_fit, color="red",
+         label=f"Exponenciális illesztés (R²={r2:.3f})")
 plt.xlabel("X")
 plt.ylabel("Y")
-plt.title("Szinusz illesztés CSV-ből")
+plt.title("Exponenciális illesztés")
 plt.legend()
+plt.grid(True)
 plt.show()
+
+# paraméterek kiírása
+print(f"Illesztett függvény: y = {a:.2f} * e^({b:.2f}x)")
+print(f"R² = {r2:.3f}")
 </code></pre>
     </div>
 
