@@ -1,1 +1,99 @@
+Itt egy letisztult és átlátható HTML sablon, amibe beillesztheted a Python kódjaidat. A <pre><code> tageket használtam, mert ezek megőrzik a Python kódok fontos behúzásait (indentálását).
 
+HTML
+
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <title>Python Kódok Gyűjteménye</title>
+    <style>
+        body { font-family: sans-serif; line-height: 1.6; max-width: 800px; margin: 0 auto; padding: 20px; background-color: #f4f4f4; }
+        .code-container { background: #fff; border: 1px solid #ddd; border-left: 5px solid #2ecc71; padding: 15px; margin-bottom: 30px; border-radius: 5px; }
+        pre { background: #272822; color: #f8f8f2; padding: 15px; overflow-x: auto; border-radius: 5px; }
+        h2 { color: #333; border-bottom: 2px solid #2ecc71; padding-bottom: 5px; }
+    </style>
+</head>
+<body>
+
+    <h1>Python Feladatok és Megoldások</h1>
+
+    <div class="code-container">
+        <h2>1. CSV Beolvasás és Plot</h2>
+        <p>Ez a kód beolvassa az akciós potenciál adatokat és kirajzolja a grafikont.</p>
+        <pre><code>import matplotlib.pyplot as plt
+# Ide jön az 1. Python kódod...
+</code></pre>
+    </div>
+
+    <div class="code-container">
+        <h2>2. Egyenes illesztése (Replace)</h2>
+        <pre><code>
+
+</code></pre>
+    </div>
+import csv
+import numpy as np
+import matplotlib.pyplot as plt
+
+# adatok beolvasása listákba
+X = []
+Y = []
+
+with open("Illesztes.csv", "r", encoding="utf-8") as f:
+    reader = csv.reader(f)
+    next(reader)  # fejléc átugrása
+    for row in reader:
+        X.append(float(row[0]))
+        Y.append(float(row[1]))
+
+X = np.array(X)
+Y = np.array(Y)
+print(X)
+print(Y)
+
+# eredeti adatok ábrázolása
+plt.scatter(X, Y, label="Mért adatok")
+
+# lineáris illesztés
+coeff = np.polyfit(X, Y, 1)
+Y_fit = np.polyval(coeff, X)
+
+# R2 számítása
+y_atlag = sum(Y) / len(Y)
+
+maradek_negyzetosszeg = 0
+teljes_negyzetosszeg = 0
+
+for i in range(len(Y)):
+    maradek_negyzetosszeg += (Y[i] - Y_fit[i]) ** 2
+    teljes_negyzetosszeg += (Y[i] - y_atlag) ** 2
+
+r2 = 1 - maradek_negyzetosszeg / teljes_negyzetosszeg
+
+# illesztett görbe
+plt.plot(X, Y_fit, label=f"Illesztett egyenes (R²={r2:.2f})")
+
+plt.xlabel("X")
+plt.ylabel("Y")
+plt.title("Adatok és lineáris illesztés")
+plt.legend()
+plt.show()
+
+print("R² érték:", r2)
+    <div class="code-container">
+        <h2>3. Váltófutás Modellezés</h2>
+        <p>Példa kód a váltófutás biomechanikai paramétereinek számításához.</p>
+        <pre><code># Ide jön a 3. Python kódod...
+</code></pre>
+    </div>
+
+    <div class="code-container">
+        <h2>4. Statisztikai Számítások</h2>
+        <p>Maximum és minimum értékek keresése az adatsorban.</p>
+        <pre><code># Ide jön a 4. Python kódod...
+</code></pre>
+    </div>
+
+</body>
+</html>
