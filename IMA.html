@@ -119,7 +119,7 @@ print("AP2 időeltolódása az első folyamathoz képest:", idoeltolodas, "ms")
     </div>
 
     <div class="code-container">
-        <h2>2. Egyenes illesztése</h2>
+        <h2>2. Első és Másodfokú Polinom Illesztése</h2>
         <pre><code>
 import numpy as np
 import matplotlib.pyplot as plt
@@ -149,33 +149,46 @@ print(Y)
 # eredeti adatok ábrázolása
 plt.scatter(X, Y, label="Mért adatok")
 
-# lineáris illesztés
-coeff = np.polyfit(X, Y, 1)
-Y_fit = np.polyval(coeff, X)
+# Elsőfokú illesztés
+coeff1 = np.polyfit(X, Y, 1)
+Y_fit1 = np.polyval(coeff1, X)
+# Másodfokú illesztés
+coeff2 = np.polyfit(X, Y, 2)
+Y_fit2 = np.polyval(coeff2, X)
 
 # R2 számítása
 y_atlag = sum(Y) / len(Y)
 
-maradek_negyzetosszeg = 0
-teljes_negyzetosszeg = 0
+maradek_negyzetosszeg1 = 0
+teljes_negyzetosszeg1 = 0
+maradek_negyzetosszeg2 = 0
+teljes_negyzetosszeg2 = 0
 
 for i in range(len(Y)):
-    maradek_negyzetosszeg += (Y[i] - Y_fit[i]) ** 2
-    teljes_negyzetosszeg += (Y[i] - y_atlag) ** 2
+    maradek_negyzetosszeg1 += (Y[i] - Y_fit1[i]) ** 2
+    teljes_negyzetosszeg1 += (Y[i] - y_atlag) ** 2
 
-r2 = 1 - maradek_negyzetosszeg / teljes_negyzetosszeg
+r2_1 = 1 - maradek_negyzetosszeg1 / teljes_negyzetosszeg1
+
+for i in range(len(Y)):
+    maradek_negyzetosszeg2 += (Y[i] - Y_fit2[i]) ** 2
+    teljes_negyzetosszeg2 += (Y[i] - y_atlag) ** 2
+
+r2_2 = 1 - maradek_negyzetosszeg2 / teljes_negyzetosszeg2
 
 # illesztett görbe
-plt.plot(X, Y_fit, label=f"Illesztett egyenes (R²={r2:.2f})")
+plt.plot(X, Y_fit1, label=f"Illesztett egyenes (R²={r2_1:.2f})")
+plt.plot(X, Y_fit2, label=f"Illesztett másodfokú (R²={r2_2:.2f})")
 
 plt.xlabel("X")
 plt.ylabel("Y")
 plt.title("Adatok és lineáris illesztés")
 plt.legend()
+plt.grid(True)
 plt.show()
 
-print("R² érték:", r2)
-            
+print("R²_1 érték:", r2_1)
+print("R²_2 érték:", r2_2)
 </code></pre>
     </div>
     <div class="code-container">
