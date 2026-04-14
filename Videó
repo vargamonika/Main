@@ -1,1 +1,127 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Videó</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50; /* Sötétkék/szürke */
+            --secondary-color: #3498db; /* Élénk kék */
+            --background-color: #ecf0f1; /* Világosszürke */
+            --text-color: #2c3e50;
+            --code-bg-color: #bdc3c7; /* Középszürke kód háttér */
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        header {
+            text-align: center;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--primary-color);
+            margin-bottom: 20px;
+        }
+        header h1 {
+            color: var(--primary-color);
+            font-size: 2.5em;
+            margin: 0;
+        }
+        header p {
+            font-style: italic;
+            color: #7f8c8d;
+        }
+        .section {
+            margin-bottom: 30px;
+        }
+        .section h2 {
+            color: var(--secondary-color);
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 5px;
+            margin-bottom: 15px;
+        }
+        .section p {
+            margin-bottom: 10px;
+        }
+        .image-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .image-container img {
+            max-width: 80%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .code-container {
+            background-color: var(--code-bg-color);
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        ul li::before {
+            content: "• ";
+            color: var(--secondary-color);
+        }
+        strong {
+            color: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
 
+<div class="container">
+    <header>
+        <h1>RGB és Felbontás</h1>
+    </header>
+
+    <div class="image-container">
+        <img src="Négyzetek.png" alt="Négyzetek">
+    </div>
+
+    <div class="section">
+        <p>RGB</p>
+<p>A televíziók, számítógépes képernyők, fotólaboratóriumok, fotónyomtatók, digitális kamerák és így a digitális fényképezők alapszínei a piros, a zöld és a kék, azaz RGB. Szín nélkül a háttér fekete, mint egy kikapcsolt televízió. A fényképezőgép nagyon hasonló módon működik: Ha nem éri fény a fényképezőgép érzékelőjét, a kép fekete marad. Az alapszínek összekeverednek az összes többi színnel, és amikor minden szín teljes mértékben eléri az érzékelőt, a kép fehér lesz.
+Ahol a kép a fénysugarak egyesüléséből születik meg, ott az RGB-t használják. Minél több fénysugár egyesül, annál fényesebb a kép, vagyis annál több szín közelíti meg a fehéret. Ezt nevezzük „additív színkeverésnek”. 
+</p>
+    </div>
+
+    <div class="section">
+        <h2>A Rekurzió Vezérlése (Az oldalhossz paraméter mint Számláló)</h2>
+       <div class="image-container">
+        <img src="Négyzetek kód.png" alt="Négyzetek rekurzió">
+    </div>
+        <p>A feladat megoldásához egy négyzet alakzatot hozunk létre szereplőként, amely piros színű (szín: 0, telítettség:100, fényerő: 100) és fekete körvonala van (vastagság: 2 pt). Szükséges egy alap blokk, ami elindítja a programot (bal oldal), majd meghívja a rekurzív saját blokkot (jobb oldal). A saját blokk úgy válik rekurzívvá, hogy a blokk végén újra meghívja önmagát, így a kilépési pontig ismétlődik. A rekurzív lépés annyiszor ismétlődik, ahányszor a bevezető blokkban megadjuk a ’négyzetek’ nevű függvény 'h' értékét, ami az oldalhossz függvényében határozza meg a lépésszámot. A fő szkript elindítja a négyzetek blokkot a h változó értékével, ami a példában 8.</p>
+<p>A kilépési pont ebben az esetben az utasítás, hogy addig ismételje, amíg a beállított oldalhossz egyenlő nem lesz 1-gyel. Ezt helyezzük a blokk elejére, így a program leáll, amint eléri a számláló az egyet. Ennél az értéknél már nem fog lefutni a rekurzív blokk. A rekurzív részben a négyzetek másolása történik olyan módon, hogy egyre kisebbé válnak és a színük egyre sötétebb lesz. A változás pontos értéke db * -1/gyök 2, ami a négyzet átlójához viszonyított méretcsökkenés. Beállítható, hogy hány négyzet rajzolása történjen meg és a kicsinyítés, valamint a szín (fényerő) változása is ehhez az értékhez fog kapcsolódni.</p>
+
+     <div class="section">
+        <h2>A legegyszerűbb megoldás</h2>
+       <div class="image-container">
+        <img src="Négyzetek rekurzió.png" alt="Négyzetek rekurzió">
+    </div>
+
+<p>Vizuálisan ugyanazt az eredményt kapjuk, ha a méretcsökkenést és a színváltozást százalékos értékként határozzuk meg úgy, hogy a 100%-ot elosztjuk annyival, ahányszor a négyzet kicsinyített megrajzolását el szeretnénk végezni, jelen esetben 8-szor.
+    </div>
+</div>
+
+</body>
+</html>
